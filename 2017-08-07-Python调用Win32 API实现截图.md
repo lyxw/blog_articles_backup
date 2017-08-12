@@ -1,13 +1,5 @@
 # Python调用Win32 API实现截图
 
----
-layout: post
-title:  "Python调用Win32 API实现截图"
-date:   2017-08-07 17:45:00
-categories: Win32api python
-permalink: /archivers/Python调用Win32 API实现截图
----
-
 ### Win32 API简介
 
 Win32 API即为Microsoft 32位平台（包括：Windows 9x, Windows NT3.1/4.0/5.0, WindowsCE等）的应用程序编程接口（Application Programming Interface），是构筑所有32位Windows平台的基石，所有在Win32平台上运行的应用程序都可以调用这些函数。
