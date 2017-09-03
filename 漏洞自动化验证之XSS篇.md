@@ -53,7 +53,9 @@ selenium需要驱动程序与你所选的浏览器进行连接。Firefox需要�
 其他受支持的浏览器也有自己的驱动程序可用。一些更受欢迎的浏览器的驱动程序下载链接如下：
 
 Chrome:	[https://sites.google.com/a/chromium.org/chromedriver/downloads](https://sites.google.com/a/chromium.org/chromedriver/downloads)
+
 Edge:	[https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
+
 Safari:	[https://webkit.org/blog/6900/webdriver-support-in-safari-10/](https://webkit.org/blog/6900/webdriver-support-in-safari-10/)
 
 ##### selenium简单操作
