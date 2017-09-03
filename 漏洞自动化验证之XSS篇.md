@@ -101,7 +101,7 @@ if driver.switch_to_alert():
 ......
 ```
 
-有关自动截图部分的内容请看[Python调用Win32 API实现截图]()
+有关自动截图部分的内容请看[Python调用Win32 API实现截图](https://lyxw.github.io/archivers/Python%E8%B0%83%E7%94%A8Win32%20API%E5%AE%9E%E7%8E%B0%E6%88%AA%E5%9B%BE)
 
 因为selenium操作浏览器时，不支持直接发送POST请求，如果触发方式为`POST`时，则需要先构造表单，用浏览器模拟点击操作来发送POST请求。
 
