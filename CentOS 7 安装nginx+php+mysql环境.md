@@ -80,10 +80,10 @@ access_log  logs/access.log  main;
 ```
 重新载入nginx的配置文件
 ```
-/usr/loca/nginx/sbin/nginx -s reload
+/usr/loca/openresty/nginx/sbin/nginx -s reload
 ```
 ### 测试php文件
-在`/usr/local/nginx/html`下创建index.php文件，输入如下内容
+在`/usr/local/openresty/nginx/html`下创建index.php文件，输入如下内容
 ```php
 <?php
     phpinfo();
@@ -94,6 +94,7 @@ access_log  logs/access.log  main;
 非本机访问需要开启防火墙策略
 ```shell
 firewall-cmd --zone=public --add-port=80/tcp --permanent  （--permanent永久生效，没有此参数重启后失效）
+firewall-cmd --reload
 ```
 ## mysql安装
 ### 下载安装包
