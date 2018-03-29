@@ -19,6 +19,7 @@
 * **--script-help=\<scripts>:** 显示脚本的帮助信息，其中<scripts>部分可以逗号分隔的文件或脚本类别
 
 ## 脚本类别
+
 Nmap的脚本类别主要分为以下几类：**`auth、broadcast、brute、default、discovery、dos、exploit、external、fuzzer、intrusive、malware、safe、version、vuln`**。下面来做详细说明。  
 
 ### auth 
