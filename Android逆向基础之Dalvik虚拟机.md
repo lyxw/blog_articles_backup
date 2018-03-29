@@ -1,3 +1,5 @@
+# Android逆向基础之Dalvik虚拟机
+
 ### 0x01 Dalvik虚拟机概述
 
 Dalvik虚拟机是Goole为Android平台专门设计的一套专门用来运行Android程序的虚拟机，是Android平台的核心组件。它可以支持已转换为 .dex（即Dalvik Executable）格式的Java应用程序的运行，Dalvik 经过优化，允许在有限的内存中同时运行多个虚拟机的实例，并且每一个Dalvik 应用作为一个独立的Linux 进程执行。独立的进程可以防止在虚拟机崩溃的时候所有程序都被关闭。
