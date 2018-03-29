@@ -2,7 +2,7 @@
 
 Dalvik是Google公司自己设计的用于Android平台的虚拟机。Dalvik虚拟机是Google等厂商合作开发的Android移动设备平台的核心组成部分之一。它可以支持已转换为 .dex（即Dalvik Executable）格式的Java应用程序的运行，.dex格式是专为Dalvik设计的一种压缩格式，适合内存和处理器速度有限的系统。Dalvik 经过优化，允许在有限的内存中同时运行多个虚拟机的实例，并且每一个Dalvik 应用作为一个独立的Linux 进程执行。独立的进程可以防止在虚拟机崩溃的时候所有程序都被关闭。
 
-# 1. 指令特点
+## 1. 指令特点
 
 Dalvik指令在调用格式上模仿了C语言的调用约定。Dalvik指令的语法与助词符有如下特点：
 - 参数采用从目标（destination）到源（source）的方式。
@@ -29,11 +29,11 @@ Dalvik指令集中大多数指令用到了寄存器作为目的操作数或源�
 - Android官方指令文档描述寄存器时，对不同取值范围的寄存器以括号说明其大小，如A:destination register(4 bits)，A:destination register(16 bits)。
 - Dalvik虚拟机中的每个寄存器都是32位的，描述指令时所说的位数表示的是寄存器数值的取值范围。
 
-# 2. 空操作指令
+## 2. 空操作指令
 
 空操作指令的助记符为`nop`。它的值为00，通常nop指令被用来作对齐代码之用，无实际操作。
 
-# 3. 数据操作指令
+## 3. 数据操作指令
 
 数据操作指令为`move`。move指令的原型为`move destination,source`，move指令根据字节码的大小与类型不同，后面会跟上不同的后缀。
 
@@ -53,7 +53,7 @@ Dalvik指令集中大多数指令用到了寄存器作为目的操作数或源�
 | move-result-object vAA | 将上一个invoke类型指令操作的对象结果赋给vAA寄存器 |
 | move-exception vAA | 保存一个运行时发生的异常到vAA寄存器，这条指令必须是异常发生时的异常处理器的一条指令,否则指令无效 |
 
-# 4. 返回指令 
+## 4. 返回指令 
 
 返回指令指的是函数结尾时运行的最后一条指令。它的基础字节码为`teturn`，共有以下四条返回指令：
 
@@ -64,7 +64,7 @@ Dalvik指令集中大多数指令用到了寄存器作为目的操作数或源�
 | return-wide vAA   | 表示函数返回一个64位非对象类型的值，返回值为8位的寄存器对vAA     |
 | return-object vAA | 表示函数返回一个对象类型的值。返回值为8位的寄存器vAA             |
 
-# 5. 数据定义指令
+## 5. 数据定义指令
 
 数据定义指令用来定义程序中用到的常量，字符串，类等数据。它的基础字节码为`const`。
 
@@ -83,7 +83,7 @@ Dalvik指令集中大多数指令用到了寄存器作为目的操作数或源�
 | const-class vAA, type@BBBB | 通过类型索引获取一个类引用并赋给寄存器vAA |
 | const-class/jumbo vAAAA, type@BBBBBBBB | 通过给定的类型索引获取一个类引用并赋给寄存器vAAAA。<br>这条指令占用两个字节，值为0xooff（Android4.0中新增的指令） |
 
-# 6. 锁指令 
+## 6. 锁指令 
 
 锁指令多用在多线程程序中对同一对象的操作。Dalvik指令集中有两条锁指令：
 
@@ -92,7 +92,7 @@ Dalvik指令集中大多数指令用到了寄存器作为目的操作数或源�
 | monitor-enter vAA | 为指定的对象获取锁 |
 | monitor-exit vAA  | 释放指定的对象的锁 |
 
-# 7. 实例操作指令 
+## 7. 实例操作指令 
 
 与实例相关的操作包括实例的类型转换，检查及新建等：
 
@@ -105,7 +105,7 @@ Dalvik指令集中大多数指令用到了寄存器作为目的操作数或源�
 | instance-of/jumbo vAAAA, vBBBB, type@CCCCCCCC | 指令功能与`instance-of vA, vB, type@CCCC`相同，只是寄存器值与指令的索引取值范围更大（Android4.0中新增的指令） |
 | new-instance/jumbo vAAAA, type@BBBBBBBB | 指令功能与`new-instance vAA, type@BBBB`相同，只是寄存器值与指令的索引取值范围更大（Android4.0中新增的指令） |
 
-# 8. 数组操作指令
+## 8. 数组操作指令
 
 数组操作包括获取数组长度，新建数组，数组赋值，数组元素取值与赋值等操作。
 
@@ -126,13 +126,13 @@ aget, aget-wide, aget-object, aget-boolean, aget-byte,aget-char, aget-short,
 aput, aput-wide, aput-object, aput-boolean, aput-byte, aput-char, aput-short
 ``` 
 
-# 9. 异常指令
+## 9. 异常指令
 
 Dalvik指令集中有一条指令用来抛出异常。
 
 `throw vAA`用来抛出vAA寄存器中指定类型的异常。
 
-# 10. 跳转指令
+## 10. 跳转指令
 
 跳转指令用于从当前地址跳转到指定的偏移处。Dalvik指令集中有三种跳转指令：无条件跳转（`goto`），分支跳转（`switch`）与条件跳转（`if`）。
 
@@ -168,7 +168,7 @@ if-testz类型的指令有以下几条：
 | if-gtz | 如果vAA大于0则跳转     | if(vAA > 0)  |
 | if-lez | 如果vAA小于等于0则跳转 | if(vAA <= 0) |
 
-# 11. 比较指令 
+## 11. 比较指令 
 
 比较指令用于对两个寄存器的值（浮点型或长整型）进行比较。它的格式为`cmpkind vAA, vBB, vCC`，其中vBB寄存器与vCC寄存器是需要比较的两个寄存器或寄存器对，比较的结果放到vAA寄存器。Dalvik指令集中共有5条比较指令：
 
@@ -180,7 +180,7 @@ if-testz类型的指令有以下几条：
 | cmpg-double | 比较两个双精度浮点数。<br>如果vBB寄存器对大于vCC寄存器对，则结果为1，相等则结果为0，小于的话，则结果为-1 |
 | cmp-long    | 比较两个长整型数。<br>如果vBB寄存器大于vCC寄存器，则结果为1，相等则结果为0，小则结果为-1 |
 
-# 12. 字段操作指令
+## 12. 字段操作指令
 
 字段操作指令用来对对象实例的字段进入读写操作。字段的类型可以是Java中有效的数据类型。对普通字段与静态字段操作有两种指令集，分别是`iinstanceop vA, vB, fidld@CCCC`与`sstaticop vAA, field@BBBB`。
 
@@ -202,7 +202,7 @@ sput，sput-wide，sput-object，sput-boolean，sput-byte，sput-char，sput-sho
 
 在Android4.0系统中，Dalvik指令集中增加了`iinstanceop/jumbo vAAAA, vBBBB, field@CCCCCCCC`与`sstaticop/jumbo vAAAA, field@BBBBBBBB`两类指令，它们与上面介绍的两类指令作用相同，只是在指令中增加了jumbo字节码后缀，且寄存器值与指令的索引取值范围更大。
 
-# 13. 方法调用指令
+## 13. 方法调用指令
 
 方法调用指令负责调用类实例的方法。它的基础指令为`invoke`，方法调用指令有`invoke-kind {vC, vD, vE, vF, vG},meth@BBBB`与`invoke-kind/range {vCCCC  .. vNNNN},meth@BBBB`两类，两类指令在作用上并无不同，只是后者在设置参数寄存器时使用了range来指定寄存器的范围。根据方法类型的不同，共有如下五条方法调用指令：
 
@@ -221,7 +221,7 @@ sput，sput-wide，sput-object，sput-boolean，sput-byte，sput-char，sput-sho
 invoke-static {}, Landroid/os/Parcel;->obtain() Landroid/os/Parcel;
 move-result-object v0
 ```
-# 14. 数据转换指令
+## 14. 数据转换指令
 
 数据转换指令用于将一种类型的数值转换成另一种类型。它的格式为`unop vA, vB`，vB寄存器或vB寄存器对存放需要转换的数据，转换后的结果保存在vA寄存器或vA寄存器对中。
 
@@ -249,7 +249,7 @@ move-result-object v0
 | int-to-char     | 将整型转换为字符型                 |
 | int-to-short    | 将整型转换为短整型                 |
 
-# 15. 数据运行指令
+## 15. 数据运行指令
 
 数据运算指令包括算术运算指令与逻辑运算指令。算术运算指令主要进行数值间如加，减，乘，除，模，移位等运算。逻辑运算指令主要进行数值间与，或，非，抑或等运算。数据运算指令有以下四类（数据运算时可能是在寄存器或寄存器对间进行，下面的指令作用讲解时使用寄存器来描述）：
 
