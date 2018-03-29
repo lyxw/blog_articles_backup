@@ -1,3 +1,5 @@
+# CentOS 7 安装nginx+php+mysql环境
+
 ## 安装php
 ### 首先得安装第三方软件库
 ```
