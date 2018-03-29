@@ -1,6 +1,7 @@
 # Android系列工具
 
-## 取证工具 
+### 取证工具 
+
 * [bandicoot](https://github.com/yvesalexandre/bandicoot) - 一个Python工具箱，用于分析手机元数据。它提供了一个完整，易于使用的环境，数据科学家分析手机元数据。只需几行代码，加载数据集，可视化数据，执行分析和导出结果。
 
 * [Android Connections Forensics](https://github.com/CyberHatcoil/ACF) - 使法庭调查员能够连接到其原始进程
@@ -23,7 +24,8 @@
 
 * [pySimReader](https://www.isecpartners.com/tools/mobile-security/pysimreader.aspx) - 它允许用户写出任意原始SMS PDU到SIM卡。
 
-## 开发工具 
+### 开发工具 
+
 * [Android SDK](https://developer.android.com/sdk/index.html) - Android软件开发工具包（SDK）包括一整套开发工具。这些包括调试器，库，基于QEMU的手持机仿真器，文档，示例代码和教程。
 
 * [Android NDK](https://developer.android.com/tools/sdk/ndk/index.html) - NDK是一个工具集，允许您使用本地代码语言（如C和C ++）来实现应用程序的各个部分。
@@ -37,7 +39,8 @@
 	```
 * [Native Android Runtime Emulation](https://bitbucket.org/jigsaw_echo/armexec) - 本机Android仿真器。
 
-## 静态分析工具 
+### 静态分析工具 
+
 * [Amandroid](http://amandroid.sireum.org/) - 一个数据流分析框架的Android应用程序的安全审查。
 
 * [Androwarn](https://github.com/maaaaz/androwarn/) - 另一个静态代码分析器的恶意Android应用程序
@@ -66,7 +69,8 @@
 
 * [VectorAttackScanner](https://github.com/JhetoX/VectorAttackScanner) – 这种工具用于分析Android应用程序以检测攻击点，例如接收器，服务，进程和库
 
-## 动态分析工具 
+### 动态分析工具 
+
 * [Android Hooker](https://github.com/AndroidHooker/hooker) - 此项目提供了各种工具和应用程序，可用于自动拦截和修改目标应用程序所做的任何API调用。
 
 * [AppAudit](http://appaudit.io/) - 在线工具（包括一个API）使用动态和静态分析检测应用程序中的隐藏数据泄漏。
@@ -87,7 +91,7 @@
 
 * [PATDroid](https://github.com/mingyuan-xia/PATDroid) - 用于分析Android应用程序和系统本身的工具和数据结构集合。形成AppAudit的基础。
 
-## 逆向工程工具 
+### 逆向工程工具 
 
 * [Androguard](https://github.com/androguard/androguard) - 反向工程，Android应用程序的恶意软件和好的软件分析
 
@@ -137,7 +141,8 @@
 
 * [Xenotix APK Reverser](https://github.com/ajinabraham/Xenotix-APK-Reverser) - 一个开源的Android应用程序包（APK）反编译和反汇编由dex2jar，baksmali和jd-core
 
-## hooking工具 
+### hooking工具 
+
 * [ADBI](https://github.com/samsung/adbi) - Android动态二进制测试（ADBI）是一种用于动态跟踪Android本机层的工具。
 
 * [Cydia Substrate](http://www.cydiasubstrate.com/) - 适用于Android的Cydia Substrate支持开发人员使用注入到目标进程内存中的Substrate扩展对现有软件进行更改。
@@ -150,7 +155,8 @@
 
 * [Xposed框架](http://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053) - Xposed框架使您能够在运行时修改系统或应用程序方面和行为，而无需修改任何Android应用程序包（APK）。
 
-## 在线分析 
+### 在线分析 
+
 * [Android Observatory](https://androidobservatory.org/) - Android Observatory是一个面向大量Android应用程序存储库的Web界面。它允许用户搜索或浏览成千上万的Android应用程序，并检索这些应用程序的原数据。
 
 * [Android APK Decompiler](http://www.decompileandroid.com/) - 解压APK文件变得容易。在线反编译。
@@ -177,7 +183,8 @@
 
 * [Virus Total](https://www.virustotal.com/) - VirusTotal是一个免费的服务，可以分析可疑文件和URL，并有助于快速检测病毒，蠕虫，木马和各种恶意软件。
 
-## Android测试分发 
+### Android测试分发 
+
 * [Android Tamer](https://androidtamer.com/) - Android Tamer是一个虚拟/现场平台Android安全专业人士。
 
 * [Androl4b](https://github.com/sh4hin/Androl4b) - 基于Ubuntu Mate的Android安全虚拟机。它包括来自不同安全专家的最新框架，教程和实验室的集合，以及用于逆向工程和恶意软件分析的研究人员
@@ -196,7 +203,8 @@
 
 * [Vezir Project](https://github.com/oguzhantopgul/Vezir-Project) - 另一个Linux虚拟机的移动应用程序Pentesting和移动恶意软件分析。
 
-## Android Vulnerable应用程序 
+### Android Vulnerable应用程序 
+
 * [Android Challenges of Various Conferences/Events](https://drive.google.com/folderview?id=0B7rtSe_PH_fTWDQ0RC1DeWVoVUE&usp=sharing)
 
 * [Damn Vulnerable Android应用程序](http://payatu.com/damn-insecure-and-vulnerable-app/) - DIVA（Damn不安全和易受攻击的应用程序）是一个应用程序故意设计为不安全。
@@ -209,7 +217,8 @@
 
 * [Sieve](https://labs.mwrinfosecurity.com/system/assets/380/original/sieve.apk) - Sieve是一个密码管理器应用程序，充满了安全漏洞。
 
-## Android安全应用框架 
+### Android安全应用框架 
+
 * [Android IMSI-Catcher-Detector](https://github.com/SecUpwN/Android-IMSI-Catcher-Detector) - 它是一个用于检测IMSI-Catchers的应用程序。IMSI捕获器是在目标移动电话和服务提供商的真实塔之间起作用的假移动塔（基站）。因此，他们被认为是中间人（MITM）攻击。在美国，IMSI捕捉器技术以名称“StingRay”被称为。
 
 * [Am I Vulnerable](http://delhi.securitycompass.com/) - AIV是一种Android安全应用，可通知用户在设备上安装的应用版本中发现的公开已知漏洞。
@@ -222,7 +231,8 @@
 
 * [SecureMe Droid（SMD）](https://securitycompass.com/secureme/) - 是一种安全应用程序，用于扫描现有应用程序，新安装和更新的应用程序已知的漏洞和安全问题的Android设备。
 
-## 应用程序安全框架
+### 应用程序安全框架
+
 * [AndroBugs](https://github.com/AndroBugs/AndroBugs_Framework) - AndroBugs框架是一个Android漏洞分析系统，可帮助开发人员或黑客在Android应用程序中发现潜在的安全漏洞。其命令行界面和输出提供了极高的效率和精度。
 
 * [AppMon](http://dpnishant.github.io/appmon) - AppMon是一个运行时安全测试和分析框架macOS，iOS和Android应用程序。对于移动渗透测试人员来说，通过在运行时检查API调用来验证源代码扫描器的安全问题报告，来验证安全问题报告是非常有用的。还可用于监控应用程序的整体活动，并专注于看起来可疑的事情，例如数据泄露，凭据，令牌等。您可以使用预定义的脚本或者编写自己的在运行时修改应用程序的功能/逻辑，例如欺骗DeviceID ，欺骗GPS坐标，伪造应用内购买，绕过苹果的TouchID等。
@@ -235,7 +245,8 @@
 
 * [SUPER](https://github.com/Razican/super) - 安全，统一，强大和可扩展的Rust分析器可用于自动分析应用程序的漏洞。
 
-## Android Malwares相关 
+### Android Malwares相关 
+
 * [backdoor-apk](https://github.com/dana-at-cp/backdoor-apk) - 一个shell脚本，它简化了向任何Android APK文件添加后门的过程。
 
 * [Contagio Mini Dump](http://contagiominidump.blogspot.com/) - Contagio mobile mini-dump提供了一个上传保管箱，可供您分享您的移动恶意软件样本。
@@ -248,7 +259,8 @@
 
 * [Spreitzenbarth - Android-Malware](http://forensics.spreitzenbarth.de/android-malware/) - Families的列表及其主要功能。
 
-## 教程 
+### 教程 
+
 * [Android Application Security Series](https://manifestsecurity.com/android-application-security/) - 一个简单和详细的Android应用程序安全系列。有益于Android安全专业人员和开发人员。
 
 * [Android Forensics Course](http://opensecuritytraining.info/AndroidForensics.html)
@@ -259,14 +271,16 @@
 
 * [Learning Android Bytecode](https://mariokmk.github.io/programming/2015/03/06/learning-android-bytecode.html)
 
-## Android漏洞列表 
+### Android漏洞列表 
+
 * [Android Vulnerabilties](http://androidvulnerabilities.org/)
 
 * [Android Vulnerability/Exploit List](https://docs.google.com/spreadsheet/pub?key=0Am5hHW4ATym7dGhFU1A4X2lqbUJtRm1QSWNRc3E0UlE&single=true&gid=0&output=html)
 
 * [Android CVE Details](http://www.cvedetails.com/vulnerability-list/vendor_id-1224/product_id-19997/Google-Android.html)
 
-## Android安全库 
+### Android安全库
+
 * [Android Password Store](https://github.com/zeapo/Android-Password-Store)
 
 * [Android Pinning](https://github.com/moxie0/AndroidPinning) - Android上的证书固定的独立库项目。
@@ -299,7 +313,8 @@
 
 * [Trusted Intents](https://github.com/guardianproject/TrustedIntents) - 用于Android应用程序之间灵活的信任交互的库
 
-## 最佳实践 
+### 最佳实践 
+
 * [NIST网络安全实践指南：“移动设备安全：云和混合构建”](https://nccoe.nist.gov/projects/building_blocks/mobile_device_security)
 
 * [Android安全概述](http://source.android.com/devices/tech/security/)
