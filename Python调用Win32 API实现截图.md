@@ -174,4 +174,4 @@ print 'file "{}" created from clipboard image'.format(filename)
 
 ### 0x03 完整代码
 
-[https://github.com/lyxw/codes/blob/master/tools/PrintScreen.py](https://github.com/lyxw/codes/blob/master/tools/PrintScreen.py)
+[PrintScreen.py](https://github.com/lyxw/codes/blob/master/tools/PrintScreen.py)
