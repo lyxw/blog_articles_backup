@@ -326,7 +326,11 @@ appid = {
 alert_csv = {
     file = true,
     fields = { timestamp, pkt_num, proto, pkt_gen, pkt_len, dir, src_ap, dst_ap, rule, action },
-    -- fields = timestamp pkt_num proto pkt_gen pkt_len dir src_ap dst_ap rule action: selected fields will be output in given order left to right { action | class | b64_data | dir | dst_addr | dst_ap | dst_port | eth_dst | eth_len | eth_src | eth_type | gid | icmp_code | icmp_id | icmp_seq | icmp_type | iface | ip_id | ip_len | msg | mpls | pkt_gen | pkt_len | pkt_num | priority | proto | rev | rule | seconds | service | sid | src_addr | src_ap | src_port | target | tcp_ack | tcp_flags | tcp_len | tcp_seq | tcp_win | timestamp | tos | ttl | udp_len | vlan }
+    -- fields = timestamp pkt_num proto pkt_gen pkt_len dir src_ap dst_ap rule action: selected fields will be output in 
+    -- given order left to right { action | class | b64_data | dir | dst_addr | dst_ap | dst_port | eth_dst | eth_len | 
+    -- eth_src | eth_type | gid | icmp_code | icmp_id | icmp_seq | icmp_type | iface | ip_id | ip_len | msg | mpls | 
+    -- pkt_gen | pkt_len | pkt_num | priority | proto | rev | rule | seconds | service | sid | src_addr | src_ap | src_port | 
+    -- target | tcp_ack | tcp_flags | tcp_len | tcp_seq | tcp_win | timestamp | tos | ttl | udp_len | vlan }
     -- limit = 0: set maximum size in MB before rollover (0 is unlimited) { 0: }
     -- separator = ,: separate fields with this character sequence
 }
@@ -347,7 +351,8 @@ alert_full = {
 --    rules[].sid = 1: rule signature ID { 1: }
 --}
 --alert_syslog = {
---    facility = auth: part of priority applied to each message { auth | authpriv | daemon | user | local0 | local1 | local2 | local3 | local4 | local5 | local6 | local7 }
+--    facility = auth: part of priority applied to each message { auth | authpriv | daemon | user | local0 | local1 | 
+--    local2 | local3 | local4 | local5 | local6 | local7 }
 --    level = info: part of priority applied to each message { emerg | alert | crit | err | warning | notice | info | debug}
 --    options: used to open the syslog connection { cons | ndelay | perror | pid }
 --}
@@ -362,7 +367,11 @@ unified2 = {
 -- use --plugin-path to load plugin
 --alert_json = {
 --    file = false: output to alert_json.txt instead of stdout
---    fields = timestamp pkt_num proto pkt_gen pkt_len dir src_ap dst_ap rule action: selected fields will be output in given order left to right { action | class | b64_data | dir | dst_addr | dst_ap | dst_port | eth_dst | eth_len | eth_src | eth_type | gid | icmp_code | icmp_id | icmp_seq | icmp_type | iface | ip_id | ip_len | msg | mpls | pkt_gen | pkt_len | pkt_num | priority | proto | rev | rule | seconds | service | sid | src_addr | src_ap | src_port | target | tcp_ack | tcp_flags | tcp_len | tcp_seq | tcp_win | timestamp | tos | ttl | udp_len | vlan }
+--    fields = timestamp pkt_num proto pkt_gen pkt_len dir src_ap dst_ap rule action: selected fields will be output in 
+--    given order left to right { action | class | b64_data | dir | dst_addr | dst_ap | dst_port | eth_dst | eth_len | 
+--    eth_src | eth_type | gid | icmp_code | icmp_id | icmp_seq | icmp_type | iface | ip_id | ip_len | msg | mpls | 
+--    pkt_gen | pkt_len | pkt_num | priority | proto | rev | rule | seconds | service | sid | src_addr | src_ap | src_port | 
+--    target | tcp_ack | tcp_flags | tcp_len | tcp_seq | tcp_win | timestamp | tos | ttl | udp_len | vlan }
 --    limit = 0: set maximum size in MB before rollover (0 is unlimited) { 0: }
 --    separator = , : separate fields with this character sequence
 --}
