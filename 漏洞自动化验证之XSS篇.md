@@ -174,7 +174,7 @@ for i in range(0, len(s)):
                 </td>
             </tr>
             <form name=theForm action="{ url }" method=post>
-            % csrf_token %
+            {% csrf_token %}
                 % autoescape off %
                     { form }
                 % endautoescape %
