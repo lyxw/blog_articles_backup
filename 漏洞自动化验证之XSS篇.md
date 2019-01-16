@@ -24,10 +24,10 @@ XSS是一个非常常见的Web漏洞，各大互联网公司对XSS的重视程�
 此处使用的是某厂商的Web漏扫，很人性化的提示当前使用的POC是用那种方式提交，不用自己进行判断，其他情况后续再做补充。
 
 GET：
-![xss_get.png](https://lyxw.github.io/images/xss_get.png)
+![xss_get.png](https://lyxw.github.io/images/tools/xss_get.png)
 
 POST：
-![xss_post.png](https://lyxw.github.io/images/xss_post.png)
+![xss_post.png](https://lyxw.github.io/images/tools/xss_post.png)
 
 #### 2、浏览器操作
 
@@ -198,7 +198,7 @@ for i in range(0, len(s)):
 
 效果图如下：
 
-![xss_form.png](https://lyxw.github.io/images/xss_form.png)
+![xss_form.png](https://lyxw.github.io/images/tools/xss_form.png)
 
 ##### 发送POST请求
 
@@ -227,4 +227,4 @@ if driver.switch_to_alert():
 
 脚本运行后，先从扫描器结果中获取XSS漏洞的url（涉及到api请求与处理），分析当前url触发方式，选用不同的提交方式去触发，最后截图保存（也可以直接写入word文件中）。
 
-![crackme2.png](https://lyxw.github.io/images/crackme2.png)
+![crackme2.png](https://lyxw.github.io/images/tools/crackme2.png)
