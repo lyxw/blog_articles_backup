@@ -55,13 +55,13 @@ win32api.keybd_event(0x2C, 0, win32con.KEYEVENTF_KEYUP, 0)
 
 剪贴板在Windows 7/8/10 中是没有的，可以在网上搜索下载一个，一般为clipbrd.exe。
 
-![](https://lyxw.github.io/images/clipbrd.png)
+![](https://lyxw.github.io/images/python/clipbrd.png)
 
 自己操作下就会发现，剪贴板只能存储最近复制的内容，新内容会替换旧内容（不区分图片或文字），QQ截图使用的也是系统剪贴板。
 
 从剪贴板查看器的查看选项可以看到，这里有两种图片格式：位图和DIB位图。
 
-![](https://lyxw.github.io/images/clipbrd_screen.png)
+![](https://lyxw.github.io/images/python/clipbrd_screen.png)
 
 #### 5、从剪贴板中读取截图
 
