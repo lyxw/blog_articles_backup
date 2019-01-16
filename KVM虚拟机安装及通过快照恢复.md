@@ -1,14 +1,8 @@
----
-layout: post
-title:  "KVM虚拟机安装及通过快照恢复"
-date:   2019-01-16 21:30:20
-categories: CentOS KVM
-permalink: /archivers/KVM虚拟机安装及通过快照恢复
----
+# KVM虚拟机安装及通过快照恢复
 
-### 0x01 安装及配置 KVM 环境
+## 0x01 安装及配置 KVM 环境
 
-#### 1、验证 CPU 
+### 1、验证 CPU 
 
 验证 CPU 是否支持 KVM，如果结果中有`vmx(Intel)`或`svm(AMD)`字样，就说明 CPU 是支持的。
 
@@ -18,7 +12,7 @@ egrep '(vmx|svm)' /proc/cpuinfo
 
 ![checkkvm.png](https://lyxw.github.io/images/kvm/checkkvm.png)
 
-#### 2、验证 BIOS
+### 2、验证 BIOS
 
 验证 BIOS 是否开启 CPU 的虚拟化支持，如已开启，返回结果大致如下所示
 
@@ -31,13 +25,13 @@ irqbypass              13503  1 kvm
 [root@localhost ~]#
 ```
 
-#### 3、关闭 SELinux
+### 3、关闭 SELinux
 
 建议关闭 SELinux，将`/etc/sysconfig/selinux`中的`SELinux=enforcing`修改为`SELinux=disabled`，测试中发现不关闭也可以
 
 ![selinux.png](https://lyxw.github.io/images/kvm/selinux.png)
 
-#### 4、安装 KVM
+### 4、安装 KVM
 
 安装 KVM 及其它必要的依赖组件
 
@@ -45,7 +39,7 @@ irqbypass              13503  1 kvm
 yum install -y qemu-kvm libvirt virt-install bridge-utils
 ```
 
-#### 5、开启 libvirtd 服务
+### 5、开启 libvirtd 服务
 
 开启 libvirtd 服务，并且设置其为开机自动启动
 
@@ -54,9 +48,9 @@ systemctl start libvirtd
 systemctl enable libvirtd
 ```
 
-### 0x02 安装 KVM 虚拟机
+## 0x02 安装 KVM 虚拟机
 
-#### 1、创建预分配磁盘
+### 1、创建预分配磁盘
 
 创建 8G 的虚拟磁盘，参数`-opreallocation=metadata`预分配磁盘，硬盘空间不会立即占用。注意磁盘格式，ext4支持此参数，ext3不支持。
 
@@ -66,7 +60,7 @@ qemu-img create -f qcow2 -opreallocation=metadata kvmwinxp.img 8G
 
 ![createkvm.png](https://lyxw.github.io/images/kvm/createkvm.png)
 
-#### 2、安装系统
+### 2、安装系统
 
 虚拟机命名为 kvmwinxp，内存 2G，1 个 CPU
 
@@ -80,14 +74,14 @@ virt-install --name=kvmwinxp --ram 2048 --vcpus=1 -f kvmwinxp.img --cdrom /root/
 
 ![installwinxp.png](https://lyxw.github.io/images/kvm/installwinxp.png)
 
-#### 3、安装完毕
+### 3、安装完毕
 
 ![winxpinstalled.png](https://lyxw.github.io/images/kvm/winxpinstalled.png)
 ![qemuinfo.png](https://lyxw.github.io/images/kvm/qemuinfo.png)
 
-### 0x03 KVM 网络设置
+## 0x03 KVM 网络设置
 
-#### 1、修改默认网络
+### 1、修改默认网络
 
 KVM 默认使用的是 virbr0 网桥，一般分配的是 192.168.122.1/24 这个网段，若需要修改，可使用`virsh net-edit default`命令来修改 virbr0 上默认的 ip 地址，修改后需要重启操作系统才能生效。
 
@@ -101,7 +95,7 @@ reboot
 
 ![netdefault.png](https://lyxw.github.io/images/kvm/netdefault.png)
 
-#### 2、自定义网网络
+### 2、自定义网网络
 
 KVM 可以将网络配置信息写入 xml 文件以实现自定义网络，具体步骤如下所示：
 
@@ -117,12 +111,12 @@ reboot
 
 ![nettest.png](https://lyxw.github.io/images/kvm/nettest.png)
 
-### 0x04 使用快照恢复 KVM 虚拟机
+## 0x04 使用快照恢复 KVM 虚拟机
 
 注意要使用 KVM 的快照功能，虚拟机的硬盘一定要是 qcow2 格式，否则无法使用快照功能。
 建议使用`virsh snapshot-create-as`命令生成快照，`qemu-img snapshot`据说不稳定，还经常出错。
 
-#### 1、创建快照
+### 1、创建快照
 
 关闭虚拟机，为虚拟机 kvmwinxp 创建快照，快照名称为 kvmwinxp_snapshot1
 
@@ -143,7 +137,7 @@ systemctl enable acpid
 systemctl start acpid
 ```
 
-#### 2、查看快照
+### 2、查看快照
 
 查看虚拟机 kvmwinxp 快照以及 kvmwinxp_snapshot1 的详细信息
 
@@ -154,7 +148,7 @@ virsh snapshot-info kvmwinxp kvmwinxp_snapshot1
 
 ![snapshotinfo.png](https://lyxw.github.io/images/kvm/snapshotinfo.png)
 
-#### 3、恢复虚拟机快照
+### 3、恢复虚拟机快照
 
 恢复虚拟机只需要使用`virsh snapshot-revert`命令即可，但是在恢复虚拟机状态之前，必须要关闭虚拟机。关闭虚拟机，可以使用`virsh destroy`命令强制性关机，也可以使用`virsh shutdown`命令关机。
 
@@ -166,31 +160,31 @@ virsh start kvmwinxp
 
 ![revert.png](https://lyxw.github.io/images/kvm/revert.png)
 
-### 0x05 导出KVM虚拟机
+## 0x05 导出KVM虚拟机
 
 导出虚拟机前注意cpu可能会有不兼容的问题，建议提前勾选`Copy host CPU configuration`选项。
 
 ![hostcpu.png](https://lyxw.github.io/images/kvm/hostcpu.png)
 
-#### 1、关闭虚拟机
+### 1、关闭虚拟机
 
 ```
 virsh shutdown kvmwinxp
 ```
 
-#### 2、导出虚拟机配置文件
+### 2、导出虚拟机配置文件
 
 ```
 virsh dumpxml kvmwinxp > kvmwinxp.xml
 ```
 
-#### 3、查看虚拟机的磁盘文件
+### 3、查看虚拟机的磁盘文件
 
 ```
 virsh domblklist kvmwinxp
 ```
 
-#### 4、打包文件
+### 4、打包文件
 
 打包 kvmwinxp.img 与 kvmwinxp.xml 文件，在测试中发现快照无法直接导入使用，即使替换新生成的快照也无法恢复到原快照保存的状态，因此建议虚拟机迁移后重新创建快照文件。
 
@@ -198,9 +192,9 @@ virsh domblklist kvmwinxp
 tar czvf kvmwinxp.tar.gz kvmwinxp.xml kvmwinxp.img
 ```
 
-### 0x06 导入 KVM 虚拟机
+## 0x06 导入 KVM 虚拟机
 
-#### 1、解压文件
+### 1、解压文件
 
 解压 kvmwinxp.tar.gz，修改 kvmwinxp.xml 中的内容或者保持 kvmwinxp.img 文件位置与原路径保持一致。
 
@@ -211,7 +205,7 @@ vi kvmwinxp.xml
 
 ![sourcefile.png](https://lyxw.github.io/images/kvm/sourcefile.png)
 
-#### 2、注册虚拟机
+### 2、注册虚拟机
 
 将 kvmwinxp.xml 文件移动到指定目录下或在 kvmwinxp.xml 所在路径执行命令，定义并注册虚拟机，注册时会做验证，需要系统中装有 openssl
 
@@ -219,19 +213,19 @@ vi kvmwinxp.xml
 virsh define kvmwinxp.xml
 ```
 
-#### 3、创建快照文件
+### 3、创建快照文件
 
 ```
 virsh snapshot-create-as kvmwinxp kvmwinxp_snapshot1
 ```
 
-#### 4、启动虚拟机
+### 4、启动虚拟机
 
 ```
 virsh start winxp
 ```
 
-#### 5、无法启动的问题
+### 5、无法启动的问题
 
 启动虚拟机时可能会出现下面的提示
 
