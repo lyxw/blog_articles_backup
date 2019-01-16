@@ -170,14 +170,14 @@ for i in range(0, len(s)):
                     <b>url(Action):</b>
                 </td>
                 <td>
-                    <a id=id_action target=_blank href="{ url_base }">{ url_base }</a>
+                    <a id=id_action target=_blank href="{{ url_base }}">{{ url_base }}</a>
                 </td>
             </tr>
-            <form name=theForm action="{ url }" method=post>
+            <form name=theForm action="{{ url }}" method=post>
             {% csrf_token %}
-                % autoescape off %
-                    { form }
-                % endautoescape %
+                {% autoescape off %}
+                    {{ form }}
+                {% endautoescape %}
             <tr>
                 <td></td>
                 <td>
