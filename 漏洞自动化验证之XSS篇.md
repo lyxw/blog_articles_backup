@@ -155,44 +155,38 @@ for i in range(0, len(s)):
 ```html
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<title>WebApi</title>
-		
-		<style>
-			body{ font-size:14px;  font-family:"Microsoft Yahei";background-color:#fff;}
-			td{table-layout: fixed; word-wrap:break-word;word-break:break-all;}
-		</style>
-	</head>
-	<body>
-		<table border=0 width='90%'>
-			<tr>
-				<td align=right style=width:120px;>
-					<b>url(Action):</b>
-				</td>
-				<td>
-					<a id=id_action target=_blank href="{{ url_base }}">{{ url_base }}</a>
-				</td>
-			</tr>
-		
-			<form name=theForm action="{{ url }}" method=post>
-			{% csrf_token %}
-			
-				{% autoescape off %}
-
-					{{ form }}
-
-				{% endautoescape %}
-			
-			<tr>
-				<td></td>
-				<td>
-					<input onclick="theForm.action=document.getElementById('id_action').href;" id=id_input_action type=submit value=' 使用Action提交POST数据 '>
-				</td>
-			</tr>
-			</form>
-		</table>
-	</body>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>WebApi</title>
+        <style>
+            body{ font-size:14px;  font-family:"Microsoft Yahei";background-color:#fff;}
+            td{table-layout: fixed; word-wrap:break-word;word-break:break-all;}
+        </style>
+    </head>
+    <body>
+        <table border=0 width='90%'>
+            <tr>
+                <td align=right style=width:120px;>
+                    <b>url(Action):</b>
+                </td>
+                <td>
+                    <a id=id_action target=_blank href="{ url_base }">{ url_base }</a>
+                </td>
+            </tr>
+            <form name=theForm action="{ url }" method=post>
+            % csrf_token %
+                % autoescape off %
+                    { form }
+                % endautoescape %
+            <tr>
+                <td></td>
+                <td>
+                    <input onclick="theForm.action=document.getElementById('id_action').href;" id=id_input_action type=submit value=' 使用Action提交POST数据 '>
+                </td>
+            </tr>
+            </form>
+        </table>
+    </body>
 </html>
 ```
 
