@@ -1,14 +1,8 @@
----
-layout: post
-title:  "Suricata启用Hyperscan支持以及Prelude-siem安装方法"
-date:   2019-01-23 15:30:20
-categories: suricata IDS Hyperscan Prelude-siem
-permalink: /archivers/Suricata启用Hyperscan支持以及Prelude-siem安装方法
----
+# Suricata启用Hyperscan支持以及Prelude-siem安装方法
 
-### 0x01 安装 Hyperscan
+## 0x01 安装 Hyperscan
 
-#### 1、Hyperscan 安装要求：
+### 1、Hyperscan 安装要求：
 
 * GCC 版本大于等于 4.8.1，使用 yum 源安装即可
 * CMake 版本大于等于 2.8.11，使用 yum 源安装即可
@@ -20,13 +14,13 @@ permalink: /archivers/Suricata启用Hyperscan支持以及Prelude-siem安装方�
 
 ![hyperscandependency.png](https://lyxw.github.io/images/suricata/hyperscandependency.png)
 
-#### 2、安装编译 pcre 所需的依赖包
+### 2、安装编译 pcre 所需的依赖包
 
 ```
 yum install -y wget gcc gcc-c++ epel-release
 ```
 
-#### 3、编译安装 pcre
+### 3、编译安装 pcre
 
 下载 pcre-8.41，选择合适的参数编译安装 pcre。本次编译选择开启 `utf、pcre16、pcre32、unicode、pcre-jit` 支持，选用 `--libdir=/usr/lib64 --includedir=/usr/include` 参数，其他路径可能需要写入 PATH；若选用默认编译安装路径，在编译 hyperscan 时会提示 PCRE not found，生成的 hyperscan 中不包含 PCRE 预处理功能。
 
@@ -43,13 +37,13 @@ make
 make install
 ```
 
-#### 4、安装编译 Hyperscan 所需依赖包
+### 4、安装编译 Hyperscan 所需依赖包
 
 ```
 yum install -y cmake libpcap-devel ragel-devel sqlite-devel
 ```
 
-#### 5、下载 Hyperscan 源码
+### 5、下载 Hyperscan 源码
 
 下载 Hyperscan 源码，解压后给 hyperscan 文件夹赋予 `755` 权限即可
 
@@ -59,7 +53,7 @@ tar zxvf hyperscan-5.0.0.tar.gz
 chmod -R 755 hyperscan-5.0.0
 ```
 
-#### 6、下载 boost-1.66 源码
+### 6、下载 boost-1.66 源码
 
 下载 boost-1.66 源码，解压并链接到 `/hyperscan/include/` 目录下
 
@@ -69,7 +63,7 @@ tar zxvf boost_1_66_0.tar.gz
 ln -s /boost_1_66_0/boost /hyperscan/include/boost
 ```
 
-#### 7、编译安装 Hyperscan
+### 7、编译安装 Hyperscan
 
 创建 Hyperscan 编译目录，同时构建静态库和共享库，类型选 release，编译安装 Hyperscan
 
@@ -89,9 +83,9 @@ make
 make install
 ```
 
-### 0x02 安装 Suricata
+## 0x02 安装 Suricata
 
-#### 1、安装前配置
+### 1、安装前配置
 
 复制头文件到 `/usr/include/` 下，否则需要修改 PATH；将 hyperscan 动态库的位置写入配置文件，以便于 suricata 编译时能找到 libhs.so 文件
 
@@ -103,14 +97,14 @@ ldconfig
 
 注意：必须执行 `ldconfig`，否则会提示找不到文件，造成 suricata 无法正常编译。
 
-#### 2、安装 suricata 依赖
+### 2、安装 suricata 依赖
 
 ```
 yum install -y pcre-devel libyaml-devel zlib-devel cargo jansson-devel PyYAML
 yum install -y libcap-ng-devel file-devel lz4-devel
 ```
 
-#### 3、下载 suricata 源码
+### 3、下载 suricata 源码
 
 ```
 wget https://www.openinfosecfoundation.org/download/suricata-4.1.0.tar.gz
@@ -118,7 +112,7 @@ tar zxvf suricata-4.1.0.tar.gz
 cd suricata-4.1.0
 ```
 
-#### 4、开启 Prelude 支持
+### 4、开启 Prelude 支持
 
 如果要开启 Prelude support ，需要安装 `libprelude-devel` 和 `gnutls-devel` 以及注释 configure 文件中第 `17936` 行附近的内容，编译安装
 
@@ -134,7 +128,7 @@ ldconfig
 
 注意：安装完毕后必须执行 `ldconfig`，否则会提示缺少 .so 文件，造成程序无法正常运行。
 
-#### 5、创建配置文件&&安装规则
+### 5、创建配置文件&&安装规则
 
 ```
 make install-conf
@@ -143,7 +137,7 @@ make install-rules
 
 ![installrules.png](https://lyxw.github.io/images/suricata/installrules.png)
 
-#### 6、测试 suricata
+### 6、测试 suricata
 
 测试 suricata 默认配置文件中加载的官方规则
 
@@ -153,16 +147,16 @@ suricata -T
 
 ![suricatatest.png](https://lyxw.github.io/images/suricata/suricatatest.png)
 
-### 0x03 安装 Prelude-siem
+## 0x03 安装 Prelude-siem
 
-#### 1、安装 prelude 软件包
+### 1、安装 prelude 软件包
 
 ```
 yum install -y epel-release
 yum install -y prelude-manager-db-plugin prelude-lml prelude-lml-rules prelude-correlator prewikka libpreludedb-mysql prelude-tools preludedb-tools preludedb-mysql
 ```
 
-#### 2、安装 mysql 数据库
+### 2、安装 mysql 数据库
 
 安装 mysql 数据库，设置为开机自启动，初始化数据库。
 
@@ -173,7 +167,7 @@ systemctl start mariadb
 mysql_secure_installation
 ```
 
-#### 3、创建数据库
+### 3、创建数据库
 
 ```
 [root@localhost ~]# mysql -u root -p
@@ -204,7 +198,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 ![mariadb.png](https://lyxw.github.io/images/suricata/mariadb.png)
 
-#### 4、导入数据库文件
+### 4、导入数据库文件
 
 ```
 [root@localhost ~]# mysql -u prelude -p prelude < /usr/share/libpreludedb/classic/mysql.sql
@@ -212,7 +206,7 @@ Enter password:
 [root@localhost ~]#
 ```
 
-#### 5、修改 prewikka 配置文件
+### 5、修改 prewikka 配置文件
 
 修改配置文件，路径为 `/etc/prewikka/prewikka.conf`
 
@@ -236,7 +230,7 @@ name: prewikka
 
 ![prewikkaconf.png](https://lyxw.github.io/images/suricata/prewikkaconf.png)
 
-#### 6、修改 prelude-manager 配置文件
+### 6、修改 prelude-manager 配置文件
 
 修改配置文件，路径为 `/etc/prelude-manager/prelude-manager.conf`
 
@@ -251,7 +245,7 @@ pass = prelude
 
 ![preludemanagerconf.png](https://lyxw.github.io/images/suricata/preludemanagerconf.png)
 
-#### 7、启动 Prelude Manager
+### 7、启动 Prelude Manager
 
 添加 Prelude Manager 并启动服务
 
@@ -274,9 +268,9 @@ Dec 06 14:16:03 localhost.localdomain systemd[1]: Starting Prelude bus communica
 
 ![preludemanager.png](https://lyxw.github.io/images/suricata/preludemanager.png)
 
-### 0x04 注册 agent
+## 0x04 注册 agent
 
-#### 1、注册 Prelude Correlator
+### 1、注册 Prelude Correlator
 
 注册 Prelude Correlator 并启动服务，此处需要先安装 `netaddr`，使用的是 python3 版本
 
@@ -286,7 +280,7 @@ python3 get-pip.py
 python3 -m pip install netaddr
 ```
 
-#### 2、注册 Prelude Correlator
+### 2、注册 Prelude Correlator
 
 * 执行 `prelude-admin register "prelude-correlator" "idmef:rw" 127.0.0.1 --uid 0 --gid 0`
 * 另一个窗口执行 `prelude-admin registration-server prelude-manager`，获取密码
@@ -301,7 +295,7 @@ python3 -m pip install netaddr
 
 ![preludeCorrelator.png](https://lyxw.github.io/images/suricata/preludeCorrelator.png)
 
-#### 3、注册 Prelude lml
+### 3、注册 Prelude lml
 
 注册 Prelude lml 并启动服务
 
@@ -318,7 +312,7 @@ python3 -m pip install netaddr
 
 ![preludelml.png](https://lyxw.github.io/images/suricata/preludelml.png)
 
-#### 4、其他设置
+### 4、其他设置
 
 开启防火墙 80 端口，启动 web 服务
 
@@ -330,7 +324,7 @@ prewikka-httpd -p 80
 
 ![firewall.png](https://lyxw.github.io/images/suricata/firewall.png)
 
-#### 5、注册 Suricata
+### 5、注册 Suricata
 
 注册方式跟上面一样，注意给 idmef 写权限 `prelude-admin register "suricata" "idmef:w" 127.0.0.1 --uid 0 --gid 0`
 
@@ -348,7 +342,7 @@ prewikka-httpd -p 80
 
 ![alertprelude.png](https://lyxw.github.io/images/suricata/alertprelude.png)
 
-#### 6、启动 suricata
+### 6、启动 suricata
 
 ```
 suricata -c /etc/suricata/suricata.yaml -i `ip a | grep '^2:' | sed 's/^[^:]*: \([^:]*\):.*$/\1/g'`
@@ -356,7 +350,7 @@ suricata -c /etc/suricata/suricata.yaml -i `ip a | grep '^2:' | sed 's/^[^:]*: \
 
 ![suricatarun.png](https://lyxw.github.io/images/suricata/suricatarun.png)
 
-#### 7、prelude admin 界面
+### 7、prelude admin 界面
 
 从 web 界面可以看到 suricata 已经注册并处于 Online 状态。
 
