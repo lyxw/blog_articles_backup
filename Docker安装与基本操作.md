@@ -501,7 +501,7 @@ CONTAINER ID     IMAGE            COMMAND                  CREATED           STA
 
 `docker exec`官方推荐使用。
 
-nsenter工具，比较繁琐，暂时不做过多概述。
+nsenter工具比较繁琐，暂时不做过多概述。
 
 ```
 [root@localhost test]# docker run -tid ubuntu:14.04
@@ -1021,7 +1021,7 @@ RUN ["/bin/bash", "-c", "echo hello"]
 
 格式为`EXPOSE <port> [<port>...]`，告诉Docker服务端容器暴露的端口号，供互联系统使用。
 
-在启动容器时需要通过`-P`Docker主机会自动分配一个端口转发到指定的端口；使用`-p`则可以具体指定哪个本地端口映射过来。
+在启动容器时需要通过`-P`，Docker主机会自动分配一个端口转发到指定的端口；使用`-p`则可以具体指定哪个本地端口映射过来。
 
 **ENV**
 
