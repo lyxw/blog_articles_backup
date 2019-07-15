@@ -64,7 +64,7 @@ ps aux | grep php-fpm
 ### 1、安装依赖包
 
 ```shell
-yum install gcc automake autoconf libtool make gcc-c++ readline readline-devel pcre pcre-devel opemssl openssl-devel zlib zlib-devel
+yum install gcc automake autoconf libtool make gcc-c++ readline readline-devel pcre pcre-devel openssl openssl-devel zlib zlib-devel
 ```
 
 ### 2、下载源码
